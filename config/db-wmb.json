@@ -3,7 +3,7 @@
   "zip": false,
   "dir": "../temp",
   "params": {
-    "backupExistingFile": true,
+    "backupExistingFile": false,
     "skipPluralNameChecking": false,
     "enhanceManyToManyDetection": true,
     "bundleNamespace": "",

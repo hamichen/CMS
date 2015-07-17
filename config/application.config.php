@@ -11,8 +11,12 @@ return array(
         'ZfcTwig',
         'DoctrineModule',
         'DoctrineORMModule',
+        'TwbBundle',
+        'QuCKEditor',
+        'QuElFinder',
         'Base',
         'Cms',
+        'User',
     ),
     'module_listener_options' => array(
         'module_paths' => array(

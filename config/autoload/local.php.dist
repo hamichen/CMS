@@ -1,0 +1,65 @@
+<?php
+/**
+ * Local Configuration Override
+ *
+ * This configuration override file is for overriding environment-specific and
+ * security-sensitive configuration information. Copy this file without the
+ * .dist extension at the end and populate values as needed.
+ *
+ * @NOTE: This file is ignored from Git by default with the .gitignore included
+ * in ZendSkeletonApplication. This is a good practice, as it prevents sensitive
+ * credentials from accidentally being committed into version control.
+ */
+
+return array(
+    'doctrine' => array(
+        'connection' => array(
+            'orm_default' => array(
+                'driverClass' => 'Doctrine\DBAL\Driver\PDOMySql\Driver',
+                'params' => array(
+                    'dbname' => 'myweb',
+                    'user' => 'root',
+                    'password' => 'xxxx',
+                    'host' => 'localhost',
+                    'port' => 3306,
+                    'charset' => 'utf8'
+                )
+            )
+        ),
+        'authentication' => array(
+            'orm_default' => array(
+                // should be the key you use to get doctrine's entity manager out of zf2's service locator
+                'objectManager' => 'doctrine.entitymanager.orm_default',
+                // fully qualified name of your user class
+                'identityClass' => 'Base\Entity\User',
+                // the identity property of your class
+                'identityProperty' => 'username',
+                // the password property of your class
+                'credentialProperty' => 'password',
+                // a callable function to hash the password with
+                'credentialCallable' => 'Base\Entity\User::hashPassword'
+            )
+        ),
+        'migrations_configuration' => array(
+            'orm_default' => array(
+                'directory' => 'data/migrations',
+                'namespace' => 'TravisDoctrineMigrations',
+                'table' => 'migrations',
+            ),
+        ),
+
+    ),
+    'phpSettings' => array(
+            'display_startup_errors' => false,
+            'display_errors' => true,
+            'max_execution_time' => 60,
+            'date.timezone' => 'Asia/Taipei',
+            'mbstring.internal_encoding' => 'UTF-8',
+        ),
+
+        // 上傳檔案格式
+        'upload' => array (
+            'allow_type' => 'doc,docx,odt,ods,odp,xls,ppt,ppsx,txt,csv,zip,rar,7z,jpeg,jpg,png,gif,pdf,tif,mdi,mpeg,mp3,mp4',
+            'image_type' => 'jpeg,jpg,png,gif'
+        )
+);
