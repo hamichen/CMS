@@ -1,0 +1,12 @@
+<form method="post" id="setForm">
+{{ formRow(form.get('title')) }}
+{{ formRow(form.get('content')) }}
+{{ formRow(form.get('tags')) }}
+    {{ formRow(form.get('order_id')) }}
+{{ formRow(form.get('id')) }}
+<input type="hidden" name="kind" value="text">
+</form>
+
+{{ QuCKEditor('content',{'width':"100%",'height':"300",'uiColor':'#FFFFFF','language':'zh'})}}
+{{ QuElFinder('elfinder',{'width':"100%",'height':"600"})}}
+

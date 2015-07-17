@@ -1,0 +1,126 @@
+{% extends 'layout/layout.twig' %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <h1 class="page-header">選單編修</h1>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    選單列表
+
+                    <div class="pull-right">
+                        <span class="btn btn-primary btn-xs edit-btn"><i class="glyphicon glyphicon-plus"></i> 新增選單</span>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    {% if parentId %}
+                        <div class="panel">
+                            <a class="btn btn-default btn-sm" href="{{ url('cms/default',{controller:'menu', action:'index'}) }}?id={{parentId}}">
+                                <i class="fa fa-arrow-up "></i> 上層</a>
+                        </div>
+
+                    {% endif %}
+
+                    <ul class="list-group">
+                        {% for v in data %}
+                            <li class="list-group-item">
+                                {% if v.cc %}
+                                    <a href="{{ url('cms/default',{controller:'menu', action:'index'}) }}?id={{ v.id }}">{{ v.name }}</a> <span class="label label-default">有 {{ v.cc }} 個子層</span>
+                                {% else %}
+                                    {{ v.name }} {% if v.url %} <a href="{{ v.url }}" target="{{ v.target }}"><i class="glyphicon glyphicon-link"></i></a>{% endif %}
+                                {% endif %}
+                                <div class="pull-right" id="sel-{{ v.id }}">
+                                    <span class="btn btn-xs btn-warning edit-btn modify">修改</span>
+                                    {% if v.cc == 0 %}
+                                        <span class="btn btn-xs btn-danger delete-btn">刪除</span>
+                                    {% endif %}
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+{% endblock content %}
+
+{% block style %}
+    <link href="{{ basePath() }}/css/bootstrap-dialog.min.css" media="screen" rel="stylesheet" type="text/css">
+
+{% endblock %}
+{% block inline %}
+<script type="text/javascript" src="{{ basePath }}/js/bootstrap-dialog.min.js"></script>
+
+    <script type="text/javascript">
+        $(function(){
+
+
+            $(".delete-btn").click(function(){
+                var id = $(this).parent().attr('id').substr(4);
+                BootstrapDialog.show({
+                    title: '刪除選單',
+                    message:'確定刪除這個選單?',
+                    buttons:[{
+                        label: '確定',
+                        cssClass: 'btn-warning',
+                        action: function(dialogRef) {
+                            var url = '{{ url('cms/default',{controller:'menu', action:'delete'}) }}';
+                            $.get(url, {id:id}, function(res){
+                                if (res.success) {
+                                    window.location.reload();
+                                }
+                            });
+
+                        }
+                    },
+                        {
+                            label: '取消',
+                            cssClass: 'btn-default',
+                            action: function(dialogRef){
+                                dialogRef.close();
+                            }
+                        }]
+
+                });
+            });
+
+            $(".edit-btn").click(function(){
+                var url = '{{ url('cms/default',{controller:'menu', action:'edit'}) }}';
+                if ($(this).hasClass('modify'))
+                url = url+'?id='+$(this).parent().attr('id').substr(4);
+                BootstrapDialog.show({
+                    title: '編修選單',
+                    message: $('<div></div>').load(url),
+                    buttons: [{
+                        label: '確定',
+                        cssClass: 'btn-primary',
+                        action: function(dialogRef){
+                            var data = $("#menuForm").serialize();
+                            var url = '{{ url('cms/default',{controller:'menu', action:'save'}) }}';
+                            $.post(url, data, function(res){
+                                if (res.success) {
+                                   window.location.reload();
+                                }
+                                else {
+                                    $("#menuForm input").removeClass('alert-danger');
+                                    $.each(res.message, function(i,v){
+                                        $("input[name='"+i+"']").addClass('alert-danger');
+                                    });
+                                }
+
+                            });
+                        }
+                    },
+                        {
+                            label: '取消',
+                            cssClass: 'btn-default',
+                            action: function(dialogRef){
+                                dialogRef.close();
+                            }
+                        }]
+                });
+            });
+        });
+    </script>
+{% endblock %}

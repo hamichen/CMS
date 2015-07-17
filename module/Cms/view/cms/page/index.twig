@@ -1,0 +1,213 @@
+{% extends 'layout/layout.twig' %}
+{% block content %}
+
+    <div class="row">
+        <div class="col-md-12">
+            <h1 class="page-header">頁面編修</h1>
+
+            <form id="pageForm" method="get">
+                {{ formRow(form.get('menu_id')) }}
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="btn-group pull-right" role="group" aria-label="..." style="margin-bottom: 10px;">
+                {% for i,b in pagekindArray %}
+                    <button type="button" class="btn btn-primary btn-append" data-kind="{{ i }}">新增 {{ b }}</button>
+                {% endfor %}
+            </div>
+            {% if paginator %}
+                <table class="table  table-bordered table-condensed table-hover table-striped" id="list-table">
+                    <thead>
+                    <tr>
+                        <th>序號</th>
+                        <th>自訂序號</th>
+                        <th>標題</th>
+                        <th>類型</th>
+                        <th>文章連結</th>
+                        <th>發佈日期</th>
+                        <th>動作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for val in paginator %}
+                        <tr id="tr-{{ val.id }}">
+                            <td>{{ val.id }}</td>
+                            <td>{{ val.orderId }}</td>
+                            <td>{{ val.title }}</td>
+                            <td>{{ pagekindArray[val.kind] }}
+                            {% if val.kind == 'file' %}( {{ val.pageFiles|length }} 個檔案){% endif %}
+                            </td>
+                            <td>{{ serverUrl() }}/page/{{ val.id }}</td>
+                            <td>{{ val.createTime.format("Y-m-d") }}</td>
+                            <td>
+                                <span class="btn btn-warning btn-xs btn-edit" data-kind="{{ val.kind }}"><i
+                                            class="fa fa-edit"></i> 修改</span>
+                                <span class="btn btn-danger btn-xs btn-delete"><i class="fa fa-trash"></i> 刪除</span>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                {{ paginationControl(paginator, 'Elastic', 'pagination.twig',
+                {'route':'cms/cms-page','controller':'page'}) }}
+            {% endif %}
+        </div>
+    </div>
+
+{% endblock %}
+{% block style %}
+    <link href="{{ basePath() }}/css/bootstrap-dialog.min.css" media="screen" rel="stylesheet" type="text/css">
+
+
+{% endblock %}
+{% block inline %}
+    <script type="text/javascript" src="{{ basePath }}/js/bootstrap-dialog.min.js"></script>
+    <script type="text/javascript" src="{{ basePath }}/js/plugins/elfinder/js/elfinder.min.js"></script>
+    <script type="text/javascript" src="{{ basePath }}/js/jquery.form.min.js"></script>
+    <script type="text/javascript" src="{{ basePath }}/js/jquery.MultiFile.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+
+            $(".btn-delete").click(function () {
+                var id = $(this).parents('tr').attr('id').substr(3);
+                var parentTr = $(this).parents('tr');
+                BootstrapDialog.show({
+                    title: '刪除對話框',
+                    message: '確定刪除?',
+                    buttons: [{
+                        label: '確定',
+                        cssClass: 'btn-danger',
+                        action: function (dialogRef) {
+                            var url = '{{ url('cms/default',{controller:'page',action:'delete'}) }}';
+                            $.get(url, {id: id}, function (res) {
+                                if (res.success) {
+                                    parentTr.remove();
+                                    dialogRef.close();
+                                }
+
+                            });
+                        }
+                    },
+                        {
+                            label: '取消',
+                            cssClass: 'btn-default',
+                            action: function (dialogRef) {
+                                dialogRef.close();
+                            }
+                        }]
+                });
+            });
+
+
+            $(".btn-append, .btn-edit").click(function () {
+                var menu_id = $("select[name='menu_id']").val();
+                var param_url = 'menu_id='+menu_id;
+                var kind = $(this).data('kind');
+
+                if ($(this).hasClass('btn-edit'))
+                    param_url +=  '&id=' + $(this).parents('tr').attr('id').substr(3);
+                else
+                    param_url += '&kind=' + kind;
+
+
+
+                var url = '{{ url('cms/default',{controller:'page',action:'get-page'}) }}?' + param_url;
+                BootstrapDialog.show({
+                    title: '編修頁面',
+                    size: BootstrapDialog.SIZE_WIDE,
+                    message: $("<div></div>").load(url),
+                    buttons: [{
+                        label: '確定',
+                        cssClass: 'btn-primary',
+                        action: function (dialogRef) {
+                            var menu_id = $("select[name='menu_id']").val();
+                            // 文字部份
+                            if (kind == 'text') {
+                                // 轉換CKEditor textarea 值
+                                CKupdate();
+                                var data = $("#setForm").serialize();
+
+                                data = data + '&menu_id=' + menu_id;
+                                var url = '{{ url('cms/default',{controller:'page', action:'save'}) }}';
+                                $.post(url, data, function (res) {
+                                    if (res.success) {
+                                        window.location.reload();
+                                    }
+                                    else {
+                                        BootstrapDialog.alert('請檢查錯誤的欄位');
+                                        $("#setForm input").removeClass('alert-danger');
+                                        $.each(res.message, function (i, v) {
+                                            $("input[name='" + i + "']").addClass('alert-danger');
+                                        });
+                                    }
+
+                                });
+                            }
+                            // 檔案部份
+                            else if (kind == 'file') {
+                                var menu_id = $("select[name='menu_id']").val();
+                                $("#setForm input[name='menu_id']").val(menu_id);
+                                $("#setForm").ajaxSubmit({
+                                    success: function (res) {
+                                        if (res.success) {
+                                            window.location.reload();
+                                        }
+                                        else {
+                                            BootstrapDialog.alert('請檢查錯誤的欄位');
+                                            $("#setForm input").removeClass('alert-danger');
+                                            $.each(res.message, function (i, v) {
+                                                $("input[name='" + i + "']").addClass('alert-danger');
+                                            });
+                                        }
+                                    }
+                                });
+                            }
+
+                            // url 部份
+                            else if (kind == 'url') {
+                                var data = $("#setForm").serialize();
+                                var menu_id = $("select[name='menu_id']").val();
+                                data = data + '&menu_id=' + menu_id;
+                                var url = '{{ url('cms/default',{controller:'page', action:'save'}) }}';
+                                $.post(url, data, function (res) {
+                                    if (res.success) {
+                                        window.location.reload();
+                                    }
+                                    else {
+                                        BootstrapDialog.alert('請檢查錯誤的欄位');
+                                        $("#setForm input").removeClass('alert-danger');
+                                        $.each(res.message, function (i, v) {
+                                            $("input[name='" + i + "']").addClass('alert-danger');
+                                        });
+                                    }
+
+                                });
+                            }
+                        }
+                    },
+                        {
+                            label: '取消',
+                            cssClass: 'btn-default',
+                            action: function (dialogRef) {
+                                dialogRef.close();
+                            }
+                        }]
+                });
+            });
+
+
+            $("select[name='menu_id']").change(function () {
+                $("#pageForm").submit();
+            });
+
+
+            function CKupdate() {
+                for (instance in CKEDITOR.instances)
+                    CKEDITOR.instances[instance].updateElement();
+            }
+        });
+    </script>
+
+{% endblock inline %}

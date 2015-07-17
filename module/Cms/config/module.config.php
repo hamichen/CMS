@@ -4,21 +4,12 @@ namespace Cms;
 return array(
     'router' => array(
         'routes' => array(
-            'cms' => array(
-                'type' => 'Zend\Mvc\Router\Http\Literal',
-                'options' => array(
-                    'route'    => '/',
-                    'defaults' => array(
-                        'controller' => 'Cms\Controller\Index',
-                        'action'     => 'index',
-                    ),
-                ),
-            ),
+
             // The following is a route to simplify getting started creating
             // new controllers and actions without needing to create a new
             // module. Simply drop new controllers in, and you can access them
             // using the path /application/:controller/:action
-            'application' => array(
+            'cms' => array(
                 'type'    => 'Literal',
                 'options' => array(
                     'route'    => '/cms',
@@ -42,6 +33,18 @@ return array(
                             ),
                         ),
                     ),
+                    'cms-page' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route' => '/cms-page/:controller[/:page]',
+                            'constraints' => array(
+                                'page' => '[0-9]+'
+                            ),
+                            'defaults' => array(
+                                'action' => 'index',
+                            )
+                        )
+                    )
                 ),
             ),
         ),
@@ -49,7 +52,14 @@ return array(
 
     'controllers' => array(
         'invokables' => array(
-            'Cms\Controller\Index' => 'Cns\Controller\IndexController'
+            'Cms\Controller\Index' => 'Cms\Controller\IndexController',
+            'Cms\Controller\Menu' => 'Cms\Controller\MenuController',
+            'Cms\Controller\Page' => 'Cms\Controller\PageController'
+        ),
+    ),
+    'view_manager' => array(
+        'template_path_stack' => array(
+            __DIR__ . '/../view',
         ),
     ),
 );
