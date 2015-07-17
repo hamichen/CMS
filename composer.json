@@ -20,6 +20,9 @@
     "neilime/zf2-twb-bundle": "2.*@stable",
     "phpoffice/phpexcel": "dev-master",
     "zendframework/zend-developer-tools": "dev-master",
-    "zendframework/zftool": "dev-master"
+    "zendframework/zftool": "dev-master",
+    "zendframework/zend-ldap": "^2.5@dev",
+    "qu-modules/qu-ckeditor": "dev-master",
+    "qu-modules/qu-elfinder": "dev-master"
   }
 }

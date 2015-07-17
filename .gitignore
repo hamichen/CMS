@@ -10,14 +10,18 @@ config/application.config.old
 # Binary gettext files
 *.mo
 
+
 # Data
 data/logs/
+data/files/
 data/cache/
 data/sessions/
 data/migrations/
 data/tmp/
 temp/
+public/uploads
 
 # Legacy ZF1
 demos/
 extras/documentation
+.idea

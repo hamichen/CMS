@@ -1,8 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module type="WEB_MODULE" version="4">
   <component name="NewModuleRootManager">
-    <content url="file://$MODULE_DIR$" />
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/module/Base/src" isTestSource="false" />
+    </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module-library">
+      <library name="PHARS">
+        <CLASSES>
+          <root url="phar://$MODULE_DIR$/vendor/zendframework/zend-loader/test/_files/PharModuleExplicit.phar" />
+          <root url="phar://$MODULE_DIR$/vendor/zendframework/zend-view/test/_templates/view.phar" />
+          <root url="phar://$MODULE_DIR$/vendor/zendframework/zend-loader/test/_files/PharModulePharTarGz.phar.tar.gz" />
+          <root url="phar://$MODULE_DIR$/vendor/zendframework/zend-loader/test/_files/classmap.phar" />
+          <root url="phar://$MODULE_DIR$/vendor/zendframework/zend-i18n/test/Translator/_files/translations.phar" />
+          <root url="phar://$MODULE_DIR$/vendor/zendframework/zend-loader/test/_files/ApplicationModulePhar.phar" />
+          <root url="phar://$MODULE_DIR$/vendor/zendframework/zend-loader/test/_files/PharModule.phar" />
+          <root url="phar://$MODULE_DIR$/vendor/zendframework/zend-loader/test/_files/PharModulePharTar.phar.tar" />
+          <root url="phar://$MODULE_DIR$/vendor/zendframework/zend-loader/test/_files/PharModuleMap.phar" />
+          <root url="phar://$MODULE_DIR$/vendor/zendframework/zend-loader/test/_files/PharModulePharZip.phar.zip" />
+          <root url="phar://$MODULE_DIR$/composer.phar" />
+        </CLASSES>
+        <SOURCES>
+          <root url="phar://$MODULE_DIR$/vendor/zendframework/zend-loader/test/_files/PharModuleExplicit.phar" />
+          <root url="phar://$MODULE_DIR$/vendor/zendframework/zend-view/test/_templates/view.phar" />
+          <root url="phar://$MODULE_DIR$/vendor/zendframework/zend-loader/test/_files/PharModulePharTarGz.phar.tar.gz" />
+          <root url="phar://$MODULE_DIR$/vendor/zendframework/zend-loader/test/_files/classmap.phar" />
+          <root url="phar://$MODULE_DIR$/vendor/zendframework/zend-i18n/test/Translator/_files/translations.phar" />
+          <root url="phar://$MODULE_DIR$/vendor/zendframework/zend-loader/test/_files/ApplicationModulePhar.phar" />
+          <root url="phar://$MODULE_DIR$/vendor/zendframework/zend-loader/test/_files/PharModule.phar" />
+          <root url="phar://$MODULE_DIR$/vendor/zendframework/zend-loader/test/_files/PharModulePharTar.phar.tar" />
+          <root url="phar://$MODULE_DIR$/vendor/zendframework/zend-loader/test/_files/PharModuleMap.phar" />
+          <root url="phar://$MODULE_DIR$/vendor/zendframework/zend-loader/test/_files/PharModulePharZip.phar.zip" />
+          <root url="phar://$MODULE_DIR$/composer.phar" />
+        </SOURCES>
+      </library>
+    </orderEntry>
   </component>
 </module>
