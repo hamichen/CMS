@@ -20,6 +20,29 @@ return array(
                     ),
                 ),
             ),
+            'menu' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/menu',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Menu',
+                        'action'     => 'index',
+                    ),
+                ),
+                'may_terminate' => true,
+                'child_routes' => array(
+                    'default' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route' => '/:id',
+                            'constraints' => array(
+                                 'id' => '[0-9]*'
+                            ),
+                            'defaults' => array()
+                        )
+                    )
+                )
+            ),
             // The following is a route to simplify getting started creating
             // new controllers and actions without needing to create a new
             // module. Simply drop new controllers in, and you can access them
@@ -73,7 +96,8 @@ return array(
     ),
     'controllers' => array(
         'invokables' => array(
-            'Application\Controller\Index' => 'Application\Controller\IndexController'
+            'Application\Controller\Index' => 'Application\Controller\IndexController',
+            'Application\Controller\Menu' => 'Application\Controller\MenuController'
         ),
     ),
     'view_manager' => array(

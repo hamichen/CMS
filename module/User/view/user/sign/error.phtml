@@ -1,0 +1,11 @@
+<?php
+if ($this->errorMessages):
+?>
+<ul>
+	<?php foreach($this->errorMessages as $val):?>
+	<li class="text-error"><h2>
+			<?php echo $val?>
+		</h2></li>
+	<?php endforeach;?>
+</ul>
+<?php endif?>

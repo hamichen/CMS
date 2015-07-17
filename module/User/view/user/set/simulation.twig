@@ -1,0 +1,15 @@
+{{ form(form) }}
+<script type="text/javascript">
+    $(function(){
+        $("#simulationForm").ajaxForm({
+            success: function(res){
+                if (res.success) {
+                    window.location.href = '/';
+                }
+            }
+        });
+        $("#simulationForm select").dblclick(function(){
+            $("#simulationForm").submit();
+        });
+    })
+</script>

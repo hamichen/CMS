@@ -1,0 +1,16 @@
+{% extends 'layout/layout.twig' %}
+{% block content %}
+<div class="row">
+	<div class="col-md-2">
+
+		{% include 'user/menu.twig' %}
+	</div>
+	<div class="col-md-10">
+
+        <h2 class="page-header">修改密碼</h2>
+		<div class="box-content">
+			{{ form(form) }}
+		</div>
+	</div>
+</div>
+{% endblock content %}

@@ -1,0 +1,42 @@
+
+<div class="container-fluid">
+	<div class="row-fluid">
+		<div class="span2">
+
+			<?php echo $this->render('user/menu.phtml')?>
+		</div>
+		<div class="span10">
+			<h2>ee</h2>
+			<pre>
+	
+	However, it is possible that the installation is requiring you to install the whole Java binaries itself, although you already have one (an old version, or a manually configured Java for example), and you are not willing to install the Java packages. In that case, just go to your package maintainer's site, and manually download the package, and unzip it to your system (yes, you will need root permissions), so that the dependencies are not installed.
+
+If you had installations fine, without any hacks, restarting Eclipse should get your Subclipse working. If not, follow what is below.
+2. Make Eclipse runtime aware of the new JavaHL binaries.
+. There are two options for doing this:
+
+    Tell JVM/Eclipse about the JavaHL libraries when starting JVM with the system property, that points to the java library path where the JavaHL binaries are installed. eg:
+    view sourceprint?
+    1.-Djava.library.path=/usr/lib/jni
+    This option can be specified in config.ini as well.
+    Put the JavaHL binaries in paths that JVM normally searches for native libraries. Normally these paths are listed, in the error above. Above the paths are listed as:
+    view sourceprint?
+    1.java.library.path = /opt/jdk/64/jdk1.6.0_20/jre/lib/amd64/server:/opt/jdk/64/jdk1.6.0_20/jre/lib/amd64:/opt/jdk/64/jdk1.6.0_20/jre/../lib/amd64:/usr/lib64/xulrunner-addons:/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib
+
+I went for the second option, since that one seemed most non-intrusive and easy to me. Let me show it how I did that:
+
+    Choose any of the listed Java library paths. In a terminal, move into that directory:
+    view sourceprint?
+    1.cd /usr/lib/jvm/java-6-sun/jre/lib/i386
+    Make softlinks to the JavaHL libraries.
+    view sourceprint?
+    1.sudo ln -s /usr/lib/jni/libsvnjavahl-1.so libsvnjavahl-1.so
+    2.sudo ln -s /usr/lib/jni/libsvnjavahl-1.so.0 libsvnjavahl-1.so.0
+    3.sudo ln -s /usr/lib/jni/libsvnjavahl-1.so.0.0.0 libsvnjavahl-1.so.0.0.0
+	
+	</pre>
+
+		</div>
+	</div>
+</div>
+

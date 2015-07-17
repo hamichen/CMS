@@ -1,0 +1,34 @@
+{% extends 'layout/layout.twig' %}
+{% block content %}
+<div class="row-fluid">
+	<div class="col-xs-2">
+
+		{% include 'user/menu.twig' %}
+	</div>
+	<div class="col-xs-10">
+        <h2 class="page-header">個人資料</h2>
+
+		<p>
+            您好 {{ user.teachers[0].truename }} !
+		</p>
+		<p>從"你的帳戶"可以快速查閱您的帳戶資料。點擊左列的連結可檢視或修改帳戶資料。</p>
+		<div class="row">
+			<div class="well">
+				<h3 class="page-header">帳號資訊</h3>
+				<p>
+				登入帳號: {{ user.username }}
+				</p>
+				<p>
+				電子郵件: {{ user.email }}
+				</p>
+				<p>
+
+				</p>
+
+			</div>
+
+		</div>
+	</div>
+</div>
+{% endblock content %}
+

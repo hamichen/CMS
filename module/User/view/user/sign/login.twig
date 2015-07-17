@@ -1,0 +1,56 @@
+{% extends 'layout/layout.twig' %} {% block content %}
+
+{% if errorMessage %}
+<div class="alert alert-warning">{{ errorMessage }}</div>
+{% endif %}
+    {{ form().openTag(form)|raw }}
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <div id="forms" class="panel panel-default">
+                <div class="panel-heading">
+                    <h3>登入系統
+                        </h3>
+                </div>
+                <div class="panel-body">
+                    <div style="padding: 10px">
+                        {{ formRow(form.get('username')) }}
+                        {{ formRow(form.get('password')) }}
+                        {% if form.has('captcha') %}
+                            <div class="row">
+                                <div class="col-md-8">
+                                    {{ formRow(form.get('captcha')) }}
+                                </div>
+                                <div class="col-md-4">
+                                    <span class="btn btn-warning btn-sm" id="refreshcaptcha"><i class="fa fa-refresh"></i> 重新取圖</span>
+                                </div>
+                            </div>
+                        {% endif %}
+                        <input type="submit" class="btn btn-primary" value="登入"/>
+                    </div>
+
+                    </div>
+                </div>
+
+        </div>
+    </div>
+    {{ form().closeTag()|raw }}
+{% endblock content %}
+
+
+{% block inline %}
+    <script type="text/javascript">
+        $(function(){
+            $('#refreshcaptcha').click(function() {
+                $.ajax({
+                    url: '{{ url('user/default',{controller:'sign', action:'refresh'}) }}',
+                    dataType:'json',
+                    success: function(data) {
+                        $('#captcha-image').attr('src', data.src);
+                        $('#captcha-hidden').attr('value', data.id);
+                    }
+                });
+            });
+            $("#loginForm").find("input[name=username]").focus();
+        })
+    </script>
+{% endblock inline %}

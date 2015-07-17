@@ -1,0 +1,33 @@
+	{% extends 'layout/layout.twig' %}
+	{% block content %}
+	<div class="col-xs-2">
+        {% include 'user/menu.twig' %}
+	</div>
+	<div class="col-xs-10">
+
+
+		<h2 class="page-header">修改 email</h2>
+		<div class="well">
+            {{ form().openTag(form)|raw }}
+			<div class="control-group">
+				<label class="control-label">目前電子郵件</label>
+				<div class="controls">
+					{{ user.email }}
+				</div>
+			</div>
+			{{ formRow(form.get('email')) }}
+            <span class="btn btn-primary" id="submitBtn">確定</span>
+			{{ form().closeTag()|raw }}
+		</div>
+	</div>
+{% endblock content %}
+    {% block inline %}
+        <script type="text/javascript">
+            $(function(){
+                $("#submitBtn").click(function(){
+                    $("#editForm").submit();
+                });
+
+            })
+        </script>
+    {% endblock %}

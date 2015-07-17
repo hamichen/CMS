@@ -1,0 +1,84 @@
+{% extends 'layout/layout.twig' %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-2">
+
+            {% include 'user/menu.twig' %}
+        </div>
+        <div class="col-md-10">
+
+            <h2 class="page-header">上傳頭像</h2>
+            <div class="">
+                <div id="UploadImages">
+                    <noscript>Please enable javascript to upload and crop images.</noscript>
+                </div>
+
+                <div id="PhotoPrevs">
+                    <!-- The cropped images will be populated here -->
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+{% block style %}
+    <link href="{{ basePath }}/js/jQuery-Impromptu/jquery-impromptu.css" rel="stylesheet" type="text/css" />
+    <link href="{{ basePath }}/js/fineuploader/fineuploader.css" rel="stylesheet" type="text/css" />
+    <link href="{{ basePath }}/js/Jcrop/jquery.Jcrop.min.css" rel="stylesheet" type="text/css" />
+
+{% endblock style %}
+{% block inline %}
+
+    <script type="text/javascript" src="{{ basePath }}/js/jQuery-Impromptu/jquery-impromptu.js"></script>
+    <script type="text/javascript" src="{{ basePath }}/js/fineuploader/jquery.fineuploader-3.0.min.js"></script>
+    <script type="text/javascript" src="{{ basePath }}/js/Jcrop/jquery.Jcrop.min.js"></script>
+    <script type="text/javascript" src="{{ basePath }}/js/jquery-uberuploadcropper.js"></script>
+
+    <script type="text/javascript">
+        $(function() {
+
+            $('#UploadImages').uberuploadcropper({
+                //---------------------------------------------------
+                // fineuploader options..
+                //---------------------------------------------------
+                fineuploader: {
+                    text: {
+                        uploadButton: '選擇圖片'
+                    },
+                    //debug : true,
+                    request	: {
+                        // params: {}
+                        endpoint: '{{ url('user/default',{controller:'set',action:'upload-image'}) }}'
+                    },
+                    validation: {
+                        //sizeLimit	: 0,
+                        allowedExtensions: ['jpg','jpeg','png','gif']
+                    }
+                },
+                //---------------------------------------------------
+                //now the cropper options..
+                //---------------------------------------------------
+                jcrop: {
+                    aspectRatio : 1,
+                    allowSelect : true, //can reselect
+                    allowResize : true, //can resize selection
+                    //minSize     : [ 100, 100 ], //if you want to be able to resize, use these
+                    //maxSize     : [ 100, 100 ],
+                    setSelect   : [ 0, 0, 200, 200 ] //these are the dimensions of the crop box x1,y1,x2,y2
+                },
+                //---------------------------------------------------
+                //now the uber options..
+                //---------------------------------------------------
+              //  folder          : 'uploads/', // only used in uber, not passed to server
+                cropAction      : '{{ url('user/default',{controller:'set',action:'crop'}) }}', // server side request to crop image
+                onComplete      : function(e,imgs,data){
+                    var $PhotoPrevs = $('#PhotoPrevs');
+
+                    for(var i=0,l=imgs.length; i<l; i++){
+                        $PhotoPrevs.append('<img src="{{ url('user/default',{controller:'sign',action:'show-image'}) }}?id={{ UserIdentity().username }}&d='+ (new Date()).getTime() +'" />');
+                    }
+                }
+            });
+
+        });
+    </script>
+{% endblock %}
