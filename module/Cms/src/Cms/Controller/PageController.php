@@ -25,7 +25,7 @@ class PageController extends BaseController
         $pageForm = new SelectPageForm();
         /** @var  $menuRes \Base\Entity\MenuRepository */
         $menuRes = $em->getRepository('Base\Entity\Menu');
-        $menuOptions = $menuRes->getMenuOptions(1);
+        $menuOptions = $menuRes->getMenuOptions();
         $pageForm->get('menu_id')->setValueOptions($menuOptions);
 
         if (!$id = (int) $this->params()->fromQuery('menu_id')){
