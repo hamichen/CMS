@@ -113,6 +113,7 @@
             $("#data-list").on('click', '#text-btn', function () {
                 CKupdate();
                 var data = $("#setForm").serialize();
+                var menu_id = $("select[name='menu_id']").val();
 
                 data = data + '&menu_id=' + menu_id;
                 var url = '{{ url('cms/default',{controller:'page', action:'save'}) }}';
