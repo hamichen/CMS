@@ -91,7 +91,9 @@ class PageController extends BaseController
         if ($page = $this->params()->fromRoute('page'))
             $paginator->setCurrentPageNumber($page);
 
+        $pageKindArray = $em->getRepository('base\Entity\Page')->getPageKindArray();
 
+        $viewModel->setVariable('pagekindArray', $pageKindArray);
 
         $viewModel->setVariable('paginator', $paginator);
 
