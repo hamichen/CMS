@@ -22,47 +22,50 @@ class MenuController extends BaseController
         $menuRes = $em->getRepository('Base\Entity\Menu');
 
         $menuData = $menuRes->find($id);
-        $params = unserialize($menuData->getParams());
+        if ($menuData) {
+            $params = unserialize($menuData->getParams());
 
-        $qb = $em->createQueryBuilder()
-            ->select('u, f, user')
-            ->from('Base\Entity\page', 'u')
-            ->leftJoin('u.menu', 'm')
-            ->leftJoin('u.user', 'user')
-            ->leftJoin('u.pageFiles', 'f')
-            ->where('m.id=:id')
-            ->setParameter('id', $id);
+            $qb = $em->createQueryBuilder()
+                ->select('u, f, user')
+                ->from('Base\Entity\page', 'u')
+                ->leftJoin('u.menu', 'm')
+                ->leftJoin('u.user', 'user')
+                ->leftJoin('u.pageFiles', 'f')
+                ->where('m.id=:id')
+                ->setParameter('id', $id);
 
-        switch ($params['order_kind']){
-            case 'desc' :
-                $qb->orderBy('u.create_time','desc');
-                break;
-            case 'asc' :
-                $qb->orderBy('u.create_time','asc');
-                break;
-            case 'id_desc' :
-                $qb->orderBy('u.id','desc');
-                break;
-            case 'id_asc' :
-                $qb->orderBy('u.id','asc');
-                break;
-            case 'custom_desc' :
-                $qb->orderBy('u.order_id','desc');
-                break;
-            case 'custom_asc' :
-                $qb->orderBy('u.order_id','asc');
-                break;
+            switch ($params['order_kind']){
+                case 'desc' :
+                    $qb->orderBy('u.create_time','desc');
+                    break;
+                case 'asc' :
+                    $qb->orderBy('u.create_time','asc');
+                    break;
+                case 'id_desc' :
+                    $qb->orderBy('u.id','desc');
+                    break;
+                case 'id_asc' :
+                    $qb->orderBy('u.id','asc');
+                    break;
+                case 'custom_desc' :
+                    $qb->orderBy('u.order_id','desc');
+                    break;
+                case 'custom_asc' :
+                    $qb->orderBy('u.order_id','asc');
+                    break;
+            }
+
+            $adapter = new DoctrineAdapter(new ORMPaginator($qb));
+            $paginator = new Paginator($adapter);
+            $paginator->setDefaultItemCountPerPage($params['max_records']);
+
+            if ($page = $this->params()->fromRoute('page'))
+                $paginator->setCurrentPageNumber($page);
+
+
+            $viewModel->setVariable('paginator', $paginator);
         }
 
-        $adapter = new DoctrineAdapter(new ORMPaginator($qb));
-        $paginator = new Paginator($adapter);
-        $paginator->setDefaultItemCountPerPage($params['max_records']);
-
-        if ($page = $this->params()->fromRoute('page'))
-            $paginator->setCurrentPageNumber($page);
-
-
-        $viewModel->setVariable('paginator', $paginator);
 
 
         return $viewModel;
