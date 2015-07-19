@@ -12,14 +12,9 @@ config/application.config.old
 
 
 # Data
-data/logs/
-data/files/
-data/cache/
 data/sessions/
-data/migrations/
 data/tmp/
 temp/
-public/uploads
 
 # Legacy ZF1
 demos/
