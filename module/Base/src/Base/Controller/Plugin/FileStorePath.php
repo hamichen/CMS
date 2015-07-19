@@ -17,10 +17,13 @@ class FileStorePath extends AbstractPlugin
     public function __invoke($path='')
     {
         $controller = $this->getController();
-        $arr = explode('\\', get_class($controller));
-        $data_path = getcwd() . '/data/files/' . strtolower($arr[0]) ;
-        if ($path)
-            $data_path .= '/'.$path;
+        if (!$path) {
+            $arr = explode('\\', get_class($controller));
+            $path =  strtolower($arr[0]);
+        }
+
+        $data_path = getcwd() . '/data/files/' . $path ;
+
 
         if (!is_dir($data_path))
             mkdir($data_path, 0755, true);

@@ -12,7 +12,7 @@
                     </div>
                 </div>
                 <div class="panel-body">
-                    {% if parentId %}
+                    {% if params().fromQuery('id') %}
                         <div class="panel">
                             <a class="btn btn-default btn-sm" href="{{ url('cms/default',{controller:'menu', action:'index'}) }}?id={{parentId}}">
                                 <i class="fa fa-arrow-up "></i> 上層</a>

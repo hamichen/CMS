@@ -23,7 +23,7 @@ return array(
             'menu' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(
-                    'route'    => '/menu',
+                    'route'    => '/m',
                     'defaults' => array(
                         'controller' => 'Application\Controller\Menu',
                         'action'     => 'index',

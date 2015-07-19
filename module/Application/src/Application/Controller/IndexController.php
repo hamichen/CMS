@@ -9,13 +9,16 @@
 
 namespace Application\Controller;
 
-use Zend\Mvc\Controller\AbstractActionController;
+use Base\Controller\BaseController;
 use Zend\View\Model\ViewModel;
 
-class IndexController extends AbstractActionController
+class IndexController extends BaseController
 {
     public function indexAction()
     {
-        return new ViewModel();
+       /* $em = $this->getEntityManager();
+        $menuArr = $em->getRepository('Base\Entity\Menu')->getMenuTree();
+        return new ViewModel();*/
+        $this->redirect()->toRoute('menu');
     }
 }

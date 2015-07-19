@@ -99,6 +99,69 @@ class MenuRepository extends EntityRepository
         return $options;
     }
 
+    /**
+     * 取出選單 options
+     *
+     * @return multitype:string
+     */
+    public function getMenuTree($id=null, $activeId= null)
+    {
+        if ($id)
+            $id = $this->find($id);
+
+        $rootResource = $this->findBy(
+            array('menu' => $id),
+            array('order_id' => 'ASC')
+            );
+
+        $collection = new \Doctrine\Common\Collections\ArrayCollection($rootResource);
+        $recursive_iterator = new RecursiveMenuIterator($collection);
+        $options = array();
+        /** @var  $childMenu \Base\Entity\Menu */
+        foreach ($recursive_iterator as $childMenu) {
+            $cid = $childMenu->getId();
+            $option = [];
+            $option['id'] = $cid;
+            $option['text'] = $childMenu->getName();
+//            $option['icon'] =  "glyphicon glyphicon-stop";
+            if ($childMenu->getUrl())
+                $option['href'] = $childMenu->getUrl();
+            else
+                $option['href'] = '/m/'.$childMenu->getId();
+
+            if ($cid == $activeId){
+                $option['state']['checked'] = true;
+                $option['state']['selected'] = true;
+            }
+
+
+            if ($recursive_iterator->hasChildren())
+                $option['nodes'] = $this->getMenuTree($cid, $activeId);
+            $options [] = $option;
+        }
+
+        return $options;
+    }
+    /*{
+        text: "Node 1",
+        icon: "glyphicon glyphicon-stop",
+        selectedIcon: "glyphicon glyphicon-stop",
+        color: "#000000",
+        backColor: "#FFFFFF",
+        href: "#node-1",
+        selectable: true,
+        state: {
+        checked: true,
+        disabled: true,
+        expanded: true,
+        selected: true
+        },
+        tags: ['available'],
+          nodes: [
+            {},
+            ...
+          ]
+        }*/
 
     /**
      * 取出選單 options

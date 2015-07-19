@@ -296,7 +296,7 @@ class PageController extends BaseController
             for($i=0;$i<$len-1; $i++)
                 $path .= substr($tempId,$i*2,2).'/';
 
-            $filePath  = $this->FileStorePath($path);
+            $filePath  = $this->FileStorePath('cms/'.$path);
             $config = $this->getServiceLocator()->get('config');
 
             $adapter

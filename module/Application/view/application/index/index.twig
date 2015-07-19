@@ -1,0 +1,33 @@
+{% extends 'layout/layout.twig' %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-3">
+            <div id="tree"></div>
+        </div>
+    </div>
+
+
+
+{% endblock content %}
+{% block style %}
+    <link href="{{ basePath() }}/css/bootstrap-treeview.min.css" media="screen" rel="stylesheet" type="text/css">
+    {% endblock %}
+
+{% block inline %}
+    <script type="text/javascript" src="{{ basePath }}/js/bootstrap-treeview.min.js"></script>
+    <script type="text/javascript">
+        $(function(){
+
+            function getTree() {
+                var tree = {{ MenuTree(null, params().fromQuery('id')) }};
+                return tree;
+            }
+
+            $('#tree').treeview({
+                enableLinks: true,
+                data: getTree()
+            });
+
+        })
+    </script>
+{% endblock %}

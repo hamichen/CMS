@@ -49,7 +49,9 @@ return array(
             'RocDate' => 'Base\View\Helper\RocDate',
             'WordWrap' => 'Base\View\Helper\WordWrap',
             'ControllerName' => 'Base\View\Helper\ControllerName',
-            'LeftMenu' => 'Base\View\Helper\LeftMenu'
+            'LeftMenu' => 'Base\View\Helper\LeftMenu',
+            'MenuTree' => 'Base\View\Helper\MenuTree',
+            'FileType' => 'Base\View\Helper\FileType',
         )
     ),
     'zfctwig' => array(

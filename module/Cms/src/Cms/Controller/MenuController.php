@@ -35,11 +35,11 @@ class MenuController extends BaseController
                 ->setParameter('id', $id);
         else
             // 預設首頁
-            $qb->where('m.id = 1');
+            $qb->where('m.id is null');
 
         $res = $qb->getQuery()->getArrayResult();
        if (count($res)){
-           if ($res[0]['parent_id'] >1 ){
+           if ($res[0]['parent_id'] ){
                // 上層選單
                $qb = $em->createQueryBuilder()
                    ->select('m.id')
@@ -55,9 +55,6 @@ class MenuController extends BaseController
            $viewModel->setVariable('data', $res);
        }
 
-
-       /* $arr = $em->getRepository('Base\Entity\Menu')->getMenuArray(1);
-        print_r($arr);*/
 
         return $viewModel;
     }
@@ -75,12 +72,18 @@ class MenuController extends BaseController
             $menuRes = $em->getRepository('Base\Entity\Menu')->find($id);
             $params = unserialize($menuRes->getParams());
             $form->bind($menuRes);
+            if ($id > 1)
             $form->get('parent_id')->setValue($menuRes->getMenu()->getId());
             $form->get('max_records')->setValue($params['max_records']);
             $form->get('order_kind')->setValue($params['order_kind']);
             $form->get('term')->setValue($params['term']);
+
+
             // 上層選單排除自己
             $menuArr[$id]['disabled'] = 'disabled';
+            $childIdArr = $em->getRepository('Base\Entity\Menu')->getChildIdArray($id);
+            foreach ($childIdArr as $cId)
+                $menuArr[$cId]['disabled'] = 'disabled';
         }
         $form->get('parent_id')->setValueOptions($menuArr);
         $viewModel->setVariable('form', $form);
@@ -104,6 +107,7 @@ class MenuController extends BaseController
             $form->bind($menuRes);
 
             $form->setData($data);
+
             if ($form->isValid()) {
                 $params['max_records'] = $data['max_records'];
                 $params['order_kind'] = $data['order_kind'];

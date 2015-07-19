@@ -1,0 +1,10 @@
+<ul class="list-group">
+    {% for f in v.pageFiles %}
+        <li class="list-group-item">
+
+            <a href="{{ url('application/default',{controller:'menu', action:'download'}) }}?id={{ f.id }}">
+                <i class="{{ FileType(f.fileExt) }}"></i>
+                {{ f.sourceName }}</a>
+        </li>
+    {% endfor %}
+</ul>
