@@ -10,7 +10,12 @@
                 <!-- Blog Post -->
 
                 <!-- Title -->
-                <h1>{{ v.title }}</h1>
+                <h1>{% if  v.kind == 'url'%}
+                    <a href="{{ v.url }}" target="{{ v.target }}">{{ v.title }}</a>
+                    {% else %}
+                        {{ v.title }}
+                    {% endif %}
+                </h1>
 
                 <!-- Author -->
                 <p class="lead">
