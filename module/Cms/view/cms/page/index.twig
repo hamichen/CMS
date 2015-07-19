@@ -119,7 +119,7 @@
                 var url = '{{ url('cms/default',{controller:'page', action:'save'}) }}';
                 $.post(url, data, function (res) {
                     if (res.success) {
-                        window.location.reload();
+                        $("select[name='menu_id']").trigger('change');
                     }
                     else {
                         BootstrapDialog.alert('請檢查錯誤的欄位');
@@ -139,7 +139,7 @@
                 $("#setForm").ajaxSubmit({
                     success: function (res) {
                         if (res.success) {
-                            window.location.reload();
+                            $("select[name='menu_id']").trigger('change');
                         }
                         else {
                             BootstrapDialog.alert('請檢查錯誤的欄位');
@@ -160,7 +160,7 @@
                 var url = '{{ url('cms/default',{controller:'page', action:'save'}) }}';
                 $.post(url, data, function (res) {
                     if (res.success) {
-                        window.location.reload();
+                        $("select[name='menu_id']").trigger('change');
                     }
                     else {
                         BootstrapDialog.alert('請檢查錯誤的欄位');
