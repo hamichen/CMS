@@ -10,10 +10,9 @@
                 <!-- Blog Post -->
 
                 <!-- Title -->
-                <h1>{% if  v.kind == 'url'%}
-                    <a href="{{ v.url }}" target="{{ v.target }}">{{ v.title }}</a>
-                    {% else %}
-                        {{ v.title }}
+                <h1> {{ v.title }}
+                    {% if  v.kind == 'url'%}
+                    <a href="{{ v.url }}" target="{{ v.target }}"><i class="glyphicon glyphicon-link"></i></a>
                     {% endif %}
                 </h1>
 
