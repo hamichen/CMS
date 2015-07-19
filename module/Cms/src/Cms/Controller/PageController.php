@@ -27,7 +27,6 @@ class PageController extends BaseController
         $menuRes = $em->getRepository('Base\Entity\Menu');
         $menuOptions = $menuRes->getMenuOptions();
         $pageForm->get('menu_id')->setValueOptions($menuOptions);
-
         if (!$id = (int) $this->params()->fromQuery('menu_id')){
             $id = current(array_keys($menuOptions));
         }
@@ -35,6 +34,24 @@ class PageController extends BaseController
             $pageForm->get('menu_id')->setValue($id);
         }
 
+        $pageKindArray = $em->getRepository('base\Entity\Page')->getPageKindArray();
+
+        $viewModel->setVariable('form', $pageForm);
+        $viewModel->setVariable('pagekindArray', $pageKindArray);
+
+        return $viewModel;
+    }
+
+
+    public function getPageListAction()
+    {
+
+        $viewModel = new ViewModel();
+        $em = $this->getEntityManager();
+        $id = $this->params()->fromQuery('id');
+
+        /** @var  $menuRes \Base\Entity\MenuRepository */
+        $menuRes = $em->getRepository('Base\Entity\Menu');
         $menuData = $menuRes->find($id);
         $params = unserialize($menuData->getParams());
 
@@ -74,17 +91,13 @@ class PageController extends BaseController
         if ($page = $this->params()->fromRoute('page'))
             $paginator->setCurrentPageNumber($page);
 
-        $pageKindArray = $em->getRepository('base\Entity\Page')->getPageKindArray();
+
 
         $viewModel->setVariable('paginator', $paginator);
-        $viewModel->setVariable('pagekindArray', $pageKindArray);
-
-        $viewModel->setVariable('form', $pageForm);
-
 
         return $viewModel;
-    }
 
+    }
 
 
     public function getPageAction()
