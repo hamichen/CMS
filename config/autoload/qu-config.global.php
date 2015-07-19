@@ -2,7 +2,25 @@
 
 return array(
     'QuConfig'=>array(
+
         'QuElFinder'=>array(
+            'QuRoots'=>array(
+                'driver'        => 'LocalFileSystem',
+                //Vendor
+                'path'  =>  getcwd()  . '/public/uploads/files',
+                'URL'           =>  '/uploads/files',
+                'accessControl' => 'access',
+                'attributes' => array(
+                    array(
+                        'read'   => false,
+                        'write'  => false,
+                        'locked' => true,
+                        'hidden' => false
+                    )
+                )
+
+            ),
+
             'elFinder'=>array(
                 'url'=>'/quelfinder/connector',
                 'lang'=>   'zh_TW',
