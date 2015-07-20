@@ -16,6 +16,9 @@ return array(
                 'user:sign' => array(
                     'guest' => 'all'
                 ),
+                'admin' => array(
+                    'admin' => 'all'
+                ),
                 'cms' => array(
                     'admin' => 'all'
                 ),
