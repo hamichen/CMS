@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: hami
- * Date: 2015/7/2
- * Time: 下午 8:58
- */
 
 namespace Admin\Controller;
 
