@@ -85,12 +85,18 @@ return array(
         ),
     ),
     'translator' => array(
-        'locale' => 'en_US',
+        'locale' => 'zh_TW',
         'translation_file_patterns' => array(
             array(
                 'type'     => 'gettext',
                 'base_dir' => __DIR__ . '/../language',
                 'pattern'  => '%s.mo',
+            ),
+        ),
+        'translation_files' => array(
+            array(
+                'type'     => 'phparray',
+                'filename' => __DIR__ . '/../language/Zend_Validate.php',
             ),
         ),
     ),

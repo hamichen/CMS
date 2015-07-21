@@ -16,6 +16,7 @@ class IndexController extends BaseController
 {
     public function indexAction()
     {
+
        /* $em = $this->getEntityManager();
         $menuArr = $em->getRepository('Base\Entity\Menu')->getMenuTree();
         return new ViewModel();*/

@@ -52,6 +52,7 @@ return array(
             'LeftMenu' => 'Base\View\Helper\LeftMenu',
             'MenuTree' => 'Base\View\Helper\MenuTree',
             'FileType' => 'Base\View\Helper\FileType',
+            'Breadcrums' => 'Base\View\Helper\Breadcrums',
         )
     ),
     'zfctwig' => array(

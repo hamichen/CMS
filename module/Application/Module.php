@@ -16,6 +16,11 @@ class Module
 {
     public function onBootstrap(MvcEvent $e)
     {
+        // 設定預設語系
+        $serviceManager = $e->getApplication()->getServiceManager();
+        $translator = $serviceManager->get('translator');
+        \Zend\Validator\AbstractValidator::setDefaultTranslator($translator);
+
         $eventManager        = $e->getApplication()->getEventManager();
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
