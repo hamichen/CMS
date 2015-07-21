@@ -219,12 +219,15 @@ class MenuRepository extends EntityRepository
     public function systemBreadcrumbsById($id)
     {
         $arr = array();
-        if ($menu = $this->find($id)) {
-            $arr[$menu->getId()]['name'] = $menu->getName();
-            if ($menu->getMenu())
-                $arr =  $this->systemBreadcrumbsById($menu->getMenu()
-                        ->getId()) + $arr;
-        }
+        if ($id)
+            $menu = $this->find($id);
+        else
+            $menu = $this->findOneBy(array('menu' => null));
+
+        $arr[$menu->getId()]['name'] = $menu->getName();
+        if ($menu->getMenu())
+            $arr = $this->systemBreadcrumbsById($menu->getMenu()
+                    ->getId()) + $arr;
         return $arr;
     }
 

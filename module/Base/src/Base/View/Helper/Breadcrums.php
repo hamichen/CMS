@@ -40,9 +40,11 @@ class Breadcrums extends AbstractHelper implements ServiceLocatorAwareInterface
 
         $em = $sm->getServiceLocator()->get('doctrine.entitymanager.orm_default');
         $mId = $routeMatch->getParam('id');
-        $breadcrumbs = $em->getRepository('Base\Entity\Menu')->systemBreadcrumbsById($mId);
+
         $str = '<ol class="breadcrumb">';
+
         $i = 0;
+        $breadcrumbs = $em->getRepository('Base\Entity\Menu')->systemBreadcrumbsById($mId);
         $len = count($breadcrumbs);
         foreach ($breadcrumbs as $id => $val) {
             if ($id== $mId)
