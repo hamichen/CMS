@@ -2,9 +2,10 @@
 
 
 namespace Base\Controller;
+
 use Zend\Console\ColorInterface;
 
-class InstallController extends  BaseController
+class InstallController extends BaseController
 {
 
     public function runAction()
@@ -16,8 +17,7 @@ class InstallController extends  BaseController
         $schemaTool = new \Doctrine\ORM\Tools\SchemaTool($em);
 
 
-
-        $console->writeLine('建立資料表中, 請稍待!!' ,ColorInterface::GREEN);
+        $console->writeLine('建立資料表中, 請稍待!!', ColorInterface::GREEN);
         $classes = $em->getMetadataFactory()->getAllMetadata();
 
         if ($this->params()->fromRoute('re-create-database')) {
@@ -26,8 +26,8 @@ class InstallController extends  BaseController
         $schemaTool->createSchema($classes);
 
         // 安裝預設管理人員及選單
-        $username= 'admin';
-        $password = \Zend\Math\Rand::getString(8,null,true);
+        $username = 'admin';
+        $password = \Zend\Math\Rand::getString(8, null, true);
         $user = new \Base\Entity\User();
         $user->setUsername($username);
         $user->setPassword(\Zend\Ldap\Attribute::createPassword($password));
@@ -36,7 +36,7 @@ class InstallController extends  BaseController
         $em->persist($user);
         $em->flush();
 
-        $menu = new\Base\Entity\Menu();
+        $menu = new \Base\Entity\Menu();
         $menu->setName('首頁');
         $menu->setUser($user);
 
@@ -50,8 +50,8 @@ class InstallController extends  BaseController
         $em->flush();
 
 
-        $console->writeLine('建立完成!!' ,ColorInterface::GREEN);
-        $console->writeLine('預設帳號 '.$username.', 密碼 '.$password ,ColorInterface::GREEN);
+        $console->writeLine('建立完成!!', ColorInterface::GREEN);
+        $console->writeLine('預設帳號 ' . $username . ', 密碼 ' . $password, ColorInterface::GREEN);
 
     }
 }
