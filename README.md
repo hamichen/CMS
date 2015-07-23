@@ -7,9 +7,11 @@
 ========
 
 - 執行 composer 安裝必要套件
+
   php composer.phar update
 
 - 更改 config/autoload/local.php.dist 為 config/autoload/local.php
+
   更改資料庫的設定,建立一個空白資料庫例 myweb
 
   ````
@@ -68,10 +70,13 @@
   ````
 
 - 執行安裝程式
+
   php public/index.php install
 
 - 設定預設管理者密碼
+
   如要重設預設管理者密碼可執行
+
   php public/index.php set-admin
 
 
