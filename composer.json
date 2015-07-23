@@ -18,7 +18,6 @@
     "zf-commons/zfc-user-doctrine-orm": "dev-master",
     "doctrine/migrations": "dev-master",
     "neilime/zf2-twb-bundle": "2.*@stable",
-    "phpoffice/phpexcel": "dev-master",
     "zendframework/zend-developer-tools": "dev-master",
     "zendframework/zftool": "dev-master",
     "zendframework/zend-ldap": "^2.5@dev",

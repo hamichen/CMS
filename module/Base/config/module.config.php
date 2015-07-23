@@ -30,6 +30,7 @@ return array(
     'controllers' => array(
         'invokables' => array(
             'Base\Controller\SetAdmin' => 'Base\Controller\SetAdminController',
+            'Base\Controller\Install' => 'Base\Controller\InstallController',
         ),
     ),
 
@@ -84,6 +85,16 @@ return array(
     'console' => array(
         'router' => array(
             'routes' => array(
+
+                'install' => array(
+                    'options' => array(
+                        'route'    => 'install [re-create-database]',
+                        'defaults' => array(
+                            'controller' => 'Base\Controller\Install',
+                            'action'     => 'run',
+                        ),
+                    ),
+                ),
 
                 'set-admin' => array(
                     'options' => array(

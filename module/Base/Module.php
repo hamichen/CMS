@@ -112,7 +112,8 @@ class Module
             'set-admin <username> <password>'    => '設定系統管理者',
             array('username', '登入帳號'),
             array('password', '登入密碼'),
-
+            'install [re-create-database]'    => '安裝系統',
+            array('re-create-database', '重新安裝資料表'),
             'version | --version' => 'display current Zend Framework version',
 
 
