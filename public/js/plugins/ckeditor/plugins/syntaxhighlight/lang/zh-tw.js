@@ -1,0 +1,22 @@
+﻿CKEDITOR.plugins.setLang( 'syntaxhighlight', 'zh-cn', {
+	title:'插入代碼',
+	contextTitle:'編輯源代碼',
+	sourceTab:'源代碼',
+	langLbl:'選擇語言',
+	sourceTextareaEmptyError:'源代碼不能為空!',
+	advancedTab:'高級',
+	hideGutter:'隱藏欄距',
+	hideGutterLbl:'隱藏左側的欄距和行號',
+	hideControls:'隱藏控件',
+	hideControlsLbl:'隱藏代碼塊頂端的所有控件',
+	collapse:'折疊',
+	collapseLbl:'初始化時折疊代碼塊',
+	codeTitleLbl:'添加代碼片段標題',
+	showColumns:'顯示列',
+	showColumnsLbl:'在首行顯示行列',
+	lineWrap:'禁用自動換行',
+	lineWrapLbl:'關閉自動換行',
+	lineCount:'自定義起始行號',
+	highlight:'自定義高亮行號(用於強調某些行)',
+	highlightLbl:'用逗號分隔需要高亮顯示的行號, 例如<em style="font-style:italic">3,10,15</em>.'
+});
