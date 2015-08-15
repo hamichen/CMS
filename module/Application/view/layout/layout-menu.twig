@@ -16,7 +16,8 @@
     <link href="{{ basePath() }}/css/bootstrap.min.css" media="screen" rel="stylesheet" type="text/css">
     <link href="{{ basePath() }}/css/font-awesome.min.css" media="screen" rel="stylesheet" type="text/css">
     <link href="{{ basePath() }}/bower_components/metisMenu/dist/metisMenu.min.css" rel="stylesheet">
-
+    <link href="{{ basePath() }}/js/syntaxhighlighter/styles/shCore.css" media="screen" rel="stylesheet" type="text/css">
+    <link href="{{ basePath() }}/js/syntaxhighlighter/styles/shThemeEclipse.css" media="screen" rel="stylesheet" type="text/css">
     <style type="text/css">
         #gotop {
             display: none;
@@ -38,6 +39,12 @@
     <!--[if lt IE 9]><script type="text/javascript" src="{{ basePath() }}/js/respond.min.js"></script><![endif]-->
     <!--[if lt IE 9]><script type="text/javascript" src="{{ basePath() }}/js/html5shiv.js"></script><![endif]-->
     <script src="{{ basePath() }}/bower_components/metisMenu/dist/metisMenu.min.js"></script>
+
+    <script type="text/javascript" src="{{ basePath() }}/js/syntaxhighlighter/scripts/shCore.js"></script>
+    <script type="text/javascript" src="{{ basePath() }}/js/syntaxhighlighter/scripts/shBrushPhp.js"></script>
+    <script type="text/javascript">
+        SyntaxHighlighter.all();
+    </script>
     {% block script %}{% endblock script %}
 </head>
 <body>
