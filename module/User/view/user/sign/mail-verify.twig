@@ -1,0 +1,18 @@
+{% extends SelectedLayout() %}
+{% block pageTitle %}
+    {{ PageTitle ('EMail 驗證', {'icon':'ion-ios-personadd'}) }}
+{% endblock %}
+
+{% block content %}
+<div class="panel">
+    <div class="panel-body">
+        {% if data %}
+            <p>{{ data.name }}，您好！</p>
+            <p>您的 Email 已驗證通過。</p>
+        {% else %}
+        <h3 class="text-danger">錯誤或過期的驗證</h3>
+        {% endif %}
+
+    </div>
+</div>
+{% endblock %}

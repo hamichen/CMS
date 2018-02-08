@@ -1,6 +1,10 @@
 <?php
 namespace Cms;
 
+use Base\Factory\BaseFactory;
+use Zend\Router\Http\Literal;
+use Zend\Router\Http\Segment;
+
 return array(
     'router' => array(
         'routes' => array(
@@ -10,19 +14,19 @@ return array(
             // module. Simply drop new controllers in, and you can access them
             // using the path /application/:controller/:action
             'cms' => array(
-                'type'    => 'Literal',
+                'type'    => Literal::class,
                 'options' => array(
                     'route'    => '/cms',
                     'defaults' => array(
-                        '__NAMESPACE__' => 'Cms\Controller',
-                        'controller'    => 'Index',
+                        'module' => __NAMESPACE__,
+                        'controller'    => Controller\IndexController::class,
                         'action'        => 'index',
                     ),
                 ),
                 'may_terminate' => true,
                 'child_routes' => array(
                     'default' => array(
-                        'type'    => 'Segment',
+                        'type'    => Segment::class,
                         'options' => array(
                             'route'    => '/[:controller[/:action]]',
                             'constraints' => array(
@@ -34,7 +38,7 @@ return array(
                         ),
                     ),
                     'cms-page' => array(
-                        'type' => 'Segment',
+                        'type' => Segment::class,
                         'options' => array(
                             'route' => '/cms-page/:controller[/:page]',
                             'constraints' => array(
@@ -51,11 +55,17 @@ return array(
     ),
 
     'controllers' => array(
-        'invokables' => array(
-            'Cms\Controller\Index' => 'Cms\Controller\IndexController',
-            'Cms\Controller\Menu' => 'Cms\Controller\MenuController',
-            'Cms\Controller\Page' => 'Cms\Controller\PageController'
+        'factories' => array(
+            Controller\IndexController::class => BaseFactory::class,
+            Controller\MenuController::class => BaseFactory::class,
+            Controller\PageController::class => BaseFactory::class,
         ),
+        'aliases' => [
+            'cms' => Controller\IndexController::class,
+            'menu' => Controller\MenuController::class,
+            'page' => Controller\PageController::class,
+
+        ]
     ),
     'view_manager' => array(
         'template_path_stack' => array(

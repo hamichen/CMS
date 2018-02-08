@@ -11,6 +11,18 @@
  * file.
  */
 
-return array(
-    // ...
-);
+return [
+    'phpSettings' => [
+        'display_startup_errors' => false,
+        'display_errors' => true,
+        'max_execution_time' => 60,
+        'date.timezone' => 'Asia/Taipei',
+        'mbstring.internal_encoding' => 'UTF-8',
+    ],
+
+    'file_type' => [
+        'cms' => [
+            'file' => 'jpg,png,docx,doc,odt,ods,pdf,odf,jpeg,ppt,pptx' //採訪通知
+        ]
+    ],
+];

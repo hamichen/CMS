@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html class="no-js" {% block ng_app %}{% endblock %}>
+<head>
+    <!-- Basic Page Needs
+    ================================================== -->
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>{% block title %}{% endblock title %}</title>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="author" content="">
+    {% block meta %}{% endblock meta %}
+    <!-- Mobile Specific Metas
+    ================================================== -->
+    <meta name="format-detection" content="telephone=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Template CSS Files
+    ================================================== -->
+    <!-- Twitter Bootstrs CSS -->
+    <link rel="stylesheet" href="/timer/css/bootstrap.min.css">
+    <!-- Ionicons Fonts Css -->
+    <link rel="stylesheet" href="/timer/css/ionicons.min.css">
+    <!-- animate css -->
+    <link rel="stylesheet" href="/timer/css/animate.css">
+    <!-- Hero area slider css-->
+    <link rel="stylesheet" href="/timer/css/slider.css">
+    <!-- owl craousel css -->
+    <link rel="stylesheet" href="/timer/css/owl.carousel.css">
+    <link rel="stylesheet" href="/timer/css/owl.theme.css">
+    <link rel="stylesheet" href="/timer/css/jquery.fancybox.css">
+    <!-- template main css file -->
+    <link rel="stylesheet" href="/timer/css/main.css">
+    <!-- responsive css -->
+    <link rel="stylesheet" href="/timer/css/responsive.css">
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- FONTAWESOME STYLE CSS -->
+    <link href="{{ basePath }}/assets/css/font-awesome.min.css" rel="stylesheet" />
+    <!--ANIMATED FONTAWESOME STYLE CSS -->
+    <link href="{{ basePath }}/assets/css/font-awesome-animation.css" rel="stylesheet" />
+
+    {% block style %}{% endblock style %}
+
+    <!-- Template Javascript Files
+    ================================================== -->
+    <!-- modernizr js -->
+    <script src="/timer/js/modernizr-2.6.2.min.js"></script>
+    <!-- jquery -->
+    <script src="/js/jquery-2.2.4.min.js"></script>
+    <!-- owl carouserl js -->
+    <script src="/timer/js/owl.carousel.min.js"></script>
+    <!-- bootstrap js -->
+
+    <script src="/timer/js/bootstrap.min.js"></script>
+    <!-- wow js -->
+    <script src="/timer/js/wow.min.js"></script>
+    <!-- slider js -->
+    <script src="/timer/js/slider.js"></script>
+    <script src="/timer/js/jquery.fancybox.js"></script>
+    <!-- template main js -->
+    <script src="/timer/js/main.js"></script>
+
+    {% block script %}{% endblock script %}
+
+</head>
+<body>
+<!--
+==================================================
+Header Section Start
+================================================== -->
+<header id="top-bar" class="navbar-fixed-top animated-header">
+    <span class="text-danger" style="position: fixed; top: 2px; right: 10px; " id="countdown"></span>
+    <div class="container">
+        <div class="navbar-header">
+
+            <!-- responsive nav button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <!-- /responsive nav button -->
+
+            <!-- logo -->
+            <div class="navbar-brand">
+                <a href="{{ url('home') }}">CMS</a>
+            </div>
+            <!-- /logo -->
+        </div>
+        {% set userIdentity = userIdentity() %}
+        <!-- main menu -->
+        <nav class="collapse navbar-collapse navbar-right" role="navigation">
+            <div class="main-menu">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/" ><i class="ion-android-home"></i> 首頁</a>
+                    </li>
+                    {% if userIdentity.role == '系統管理者' %}
+                    <li class="dropdown">
+                        <a href="/#" class="dropdown-toggle" data-toggle="dropdown"><i class="ion-settings"></i> 管理者選單 <span class="caret"></span></a>
+                        <div class="dropdown-menu">
+                            <ul>
+                                <li><a href="/admin/user"><i class="ion-android-contacts"></i> 使用者管理</a></li>
+                                <li><a href="/cms/page"><i class="ion-compose"></i> 頁面編修</a></li>
+                                <li><a href="/cms/menu"><i class="ion-grid"></i> 選單管理</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    {% endif %}
+                    <li>
+                    {% if userIdentity %}
+                        <a  href="{{ url('user/logout') }}"><i class="ion-log-out"></i> {{ userIdentity.displayName|default(userIdentity.username) }} 登出</a>
+                    {% else %}
+                        <a href="{{ url('user/login') }}">登入系統</a>
+                    {% endif %}
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <!-- /main nav -->
+    </div>
+</header>
+
+
+
+<!--
+==================================================
+Slider Section Start
+================================================== -->
+<section id="about">
+    <div class="container">
+        {% block pageTitle %}{% endblock pageTitle %}
+        {% include 'layout/flashMessenger.twig' only %}
+        {% block content %}{{ content|raw }}{% endblock content %}
+    </div>
+</section> <!-- /#about -->
+
+
+<!--
+==================================================
+Call To Action Section Start
+================================================== -->
+<section id="call-to-action">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="block">
+                    <h2 class="title wow fadeInDown" data-wow-delay=".3s" data-wow-duration="500ms">CMS MEMO</h2>
+
+                        <div class="wow fadeInDown" data-wow-delay=".5s" data-wow-duration="500ms">
+                            {% set memo = SystemPage('頁尾備註') %}
+                            {% if memo %}
+                            <div class="skills">{{ memo.content|raw }}</div>
+                            {% endif %}
+                        </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+<!--
+==================================================
+Footer Section Start
+================================================== -->
+<footer id="footer">
+    <div class="container">
+        <div class="col-md-8">
+            <p class="copyright">Copyright &copy; 2017 - {{ "now"|date("Y") }} </a>. </p>
+        </div>
+        <div class="col-md-4">
+            <p class="pull-right">version: 1.0</p>
+        </div>
+    </div>
+</footer> <!-- /#footer -->
+{% if userIdentity %}
+    <script>
+        $(function () {
+            var session_counter = {{ config().session_timeout }};
+            function start_countdown()
+            {
+                myVar= setInterval(function()
+                {
+                    if(session_counter <= 300)
+                    {
+                        document.getElementById("countdown").innerHTML="您將於 "+secondsTimeSpanToHMS(session_counter)+" 後登出系統";
+                    }
+                    if(session_counter==0)
+                    {
+                        $.ajax
+                        ({
+                            type:'post',
+                            url:'/user/logout',
+                            data:{
+                                logout:"logout"
+                            },
+                            success:function(response)
+                            {
+                                window.location="";
+                            }
+                        });
+                    }
+                    session_counter--;
+                }, 1000)
+            }
+            $(document).ajaxComplete(function() {
+                document.getElementById("countdown").innerHTML='';
+                session_counter = {{ config().session_timeout }} ;
+            });
+
+            function secondsTimeSpanToHMS(s) {
+                var h = Math.floor(s/3600); //Get whole hours
+                s -= h*3600;
+                var m = Math.floor(s/60); //Get remaining minutes
+                s -= m*60;
+                return (m < 10 ? '0'+m : m)+":"+(s < 10 ? '0'+s : s); //zero padding on minutes and seconds
+            }
+            start_countdown();
+        })
+    </script>
+{% endif %}
+{% block inline %}{% endblock inline %}
+</body>
+</html>

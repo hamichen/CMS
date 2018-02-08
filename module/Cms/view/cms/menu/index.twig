@@ -1,47 +1,69 @@
 {% extends 'layout/layout.twig' %}
+{% block pageTitle %}
+    {{ PageTitle ('選單編修',{'icon':'ion-grid'}) }}
+{% endblock %}
 {% block content %}
-    <div class="row">
-        <div class="col-md-12">
-            <h1 class="page-header">選單編修</h1>
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    選單列表
+    <div class="panel">
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            選單列表
 
-                    <div class="pull-right">
-                        <span class="btn btn-primary btn-xs edit-btn"><i class="glyphicon glyphicon-plus"></i> 新增選單</span>
-                    </div>
-                </div>
-                <div class="panel-body">
-                    {% if params().fromQuery('id') %}
-                        <div class="panel">
-                            <a class="btn btn-default btn-sm" href="{{ url('cms/default',{controller:'menu', action:'index'}) }}?id={{parentId}}">
-                                <i class="fa fa-arrow-up "></i> 上層</a>
+                            <div class="pull-right">
+                                <span class="btn btn-primary btn-xs edit-btn"><i class="glyphicon glyphicon-plus"></i> 新增選單</span>
+                            </div>
                         </div>
-
-                    {% endif %}
-
-                    <ul class="list-group">
-                        {% for v in data %}
-                            <li class="list-group-item">
-                                {% if v.cc %}
-                                    <a href="{{ url('cms/default',{controller:'menu', action:'index'}) }}?id={{ v.id }}">{{ v.name }}</a> <span class="label label-default">有 {{ v.cc }} 個子層</span>
-                                {% else %}
-                                    {{ v.name }} {% if v.url %} <a href="{{ v.url }}" target="{{ v.target }}"><i class="glyphicon glyphicon-link"></i></a>{% endif %}
-                                {% endif %}
-                                <div class="pull-right" id="sel-{{ v.id }}">
-                                    <span class="btn btn-xs btn-warning edit-btn modify">修改</span>
-                                    {% if v.cc == 0 %}
-                                        <span class="btn btn-xs btn-danger delete-btn">刪除</span>
-                                    {% endif %}
+                        <div class="panel-body">
+                            {% if params().fromQuery('id') %}
+                                <div class="panel">
+                                    <a class="btn btn-default btn-sm" href="{{ url('cms/default',{controller:'menu', action:'index'}) }}?id={{parentId}}">
+                                        <i class="fa fa-arrow-up "></i> 上層</a>
                                 </div>
-                            </li>
-                        {% endfor %}
-                    </ul>
+
+                            {% endif %}
+
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>選單名稱</th>
+                                    <th>顯示樣版</th>
+                                    <th>是否列在主選單</th>
+                                    <th class="text-center">動作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for v in data %}
+                                    <tr>
+                                        <td>
+                                            {% if v.cc %}
+                                                <a href="{{ url('cms/default',{controller:'menu', action:'index'}) }}?id={{ v.id }}">{{ v.name }}</a> <span class="label label-default">有 {{ v.cc }} 個子層</span>
+                                            {% else %}
+                                                {{ v.name }} {% if v.url %} <a href="{{ v.url }}" target="{{ v.target }}"><i class="glyphicon glyphicon-link"></i></a>{% endif %}
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ layoutName[v.layout] }}</td>
+                                        <td>{% if v.is_display %}顯示{% else %}<span class="text-danger">不顯示</span>{% endif %}</td>
+                                        <td id="sel-{{ v.id }}" class="text-center">
+                                            <span class="btn btn-xs btn-warning edit-btn modify">修改</span>
+                                            {% if v.cc == 0 %}
+                                                <span class="btn btn-xs btn-danger delete-btn">刪除</span>
+                                            {% endif %}
+                                            <a href="{{ url('cms/default',{controller:'page', action:'index'}) }}?menu_id={{ v.id }}"><span class="btn btn-xs btn-primary">編輯頁面</span></a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
                 </div>
             </div>
-
         </div>
     </div>
+
 
 {% endblock content %}
 
@@ -50,8 +72,8 @@
 
 {% endblock %}
 {% block inline %}
-<script type="text/javascript" src="{{ basePath }}/js/bootstrap-dialog.min.js"></script>
-
+    <script type="text/javascript" src="{{ basePath }}/js/bootstrap-dialog.min.js"></script>
+    <script src="//cdn.ckeditor.com/4.6.2/standard-all/ckeditor.js"></script>
     <script type="text/javascript">
         $(function(){
 
@@ -70,6 +92,8 @@
                                 if (res.success) {
                                     window.location.reload();
                                 }
+                                else
+                                    BootstrapDialog.alert(res.message);
                             });
 
                         }
@@ -96,6 +120,7 @@
                         label: '確定',
                         cssClass: 'btn-primary',
                         action: function(dialogRef){
+                            CKupdate();
                             var data = $("#menuForm").serialize();
                             var url = '{{ url('cms/default',{controller:'menu', action:'save'}) }}';
                             $.post(url, data, function(res){
@@ -121,6 +146,11 @@
                         }]
                 });
             });
+
+            function CKupdate() {
+                for (instance in CKEDITOR.instances)
+                    CKEDITOR.instances[instance].updateElement();
+            }
         });
     </script>
 {% endblock %}

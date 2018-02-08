@@ -1,0 +1,45 @@
+{% extends SelectedLayout() %}
+{% block pageTitle %}
+    {{ PageTitle ('使用者註冊', {'icon':'ion-ios-personadd-outline'}) }}
+{% endblock %}
+
+{% block content %}
+<div class="panel">
+    <div class="panel-body">
+        {% if errorMessage %}
+            <div class="alert alert-warning">{{ errorMessage }}</div>
+        {% endif %}
+        <div class="row">
+            <div class="col-sm-8">
+                {{ form(form) }}
+                <span class="btn btn-primary" id="submit-btn">確定註冊</span>
+            </div>
+            <div class="col-sm-4">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <h3>關於註冊</h3>
+                    </div>
+                    <div class="panel-body">
+                        <ol>
+                        <li>帳號註冊僅限於本部三署同仁，其他單位人員請由行政資訊入口網以單一帳號(SSO)登入。</li>
+                        <li>登錄成功後，系統將寄一封驗證信件至您的 Email 信箱，請前往收信啟動 Email 驗證。</li>
+                        <li>您的帳號仍需由綜規司管理人員啟用，請按此下載帳號申請單，核章後傳真至綜規司啟用帳號。</li>
+                        </ol>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block inline %}
+    <script>
+        $(function () {
+            $("#submit-btn").click(function () {
+                $("#register_form").submit();
+            });
+
+        })
+    </script>
+{% endblock inline %}

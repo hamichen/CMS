@@ -1,0 +1,23 @@
+<form method="post" action="{{ url('cms/default',{controller:'page', action:'save'}) }}" id="setForm"
+      accept-charset="UTF-8" enctype="multipart/form-data">
+
+    {{ formRow(form.get('title')) }}
+    {{ formRow(form.get('content')) }}
+    {{ formRow(form.get('id')) }}
+    {{ formRow(form.get('order_id')) }}
+<input type="hidden" name="kind" value="layout">
+<input type="hidden" name="menu_id" value="">
+</form>
+<button class="btn btn-primary" id="text-btn"><i class="fa fa-save"></i> 確定</button>
+<button class="btn btn-default" id="cancel-btn"><i class="fa fa-undo"></i> 放棄編輯</button>
+
+<script type="text/javascript">
+    $(function () {
+
+        CKEDITOR.replace( 'content', {
+            height: 300,
+            filebrowserUploadUrl: "/upload.php",
+        } );
+
+    })
+</script>

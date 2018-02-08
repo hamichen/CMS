@@ -1,20 +1,30 @@
-{{ form().openTag(form)|raw}}
-{{ formRow(form.get('name')) }}
-{{ formRow(form.get('parent_id')) }}
-{{ formRow(form.get('order_id')) }}
-<span id="show-url" class="text-info btn btn-default">連結設定</span>
-<div id="url-div" class="well" style="display: none">
-    {{ formRow(form.get('url')) }}
-    {{ formRow(form.get('target')) }}
+<div class="panel">
+    <div class="panel-body">
+        {{ form().openTag(form)|raw}}
+        {{ formRow(form.get('name')) }}
+        {{ formRow(form.get('parent_id')) }}
+        {{ formRow(form.get('layout')) }}
+        {{ formRow(form.get('is_display')) }}
+        {{ formRow(form.get('order_id')) }}
+        <span id="show-url" class="text-info btn btn-default">連結設定</span>
+        <div id="url-div" class="well" style="display: none">
+            {{ formRow(form.get('url')) }}
+            {{ formRow(form.get('target')) }}
+        </div>
+        <span id="show-param" class="text-info btn btn-default">更多參數</span>
+        <div id="param-div" class="well" style="display: none">
+            {{ formRow(form.get('max_records')) }}
+            {{ formRow(form.get('order_kind')) }}
+            {{ formRow(form.get('title_limit')) }}
+            {{ formRow(form.get('term')) }}
+            {{ formRow(form.get('memo')) }}
+        </div>
+        {{ formRow(form.get('id')) }}
+
+        {{ form().closTag()|raw }}
+
+    </div>
 </div>
-<span id="show-param" class="text-info btn btn-default">更多參數</span>
-<div id="param-div" class="well" style="display: none">
-    {{ formRow(form.get('max_records')) }}
-    {{ formRow(form.get('order_kind')) }}
-    {{ formRow(form.get('term')) }}
-</div>
-{{ formRow(form.get('id')) }}
-{{ form().closTag()|raw }}
 
 <script>
     $(function(){
@@ -24,5 +34,10 @@
         $("#show-param").click(function(){
             $("#param-div").toggle("slow");
         });
+
+        CKEDITOR.replace( 'memo', {
+            height: 100,
+            filebrowserUploadUrl: "/upload.php",
+        } );
     })
 </script>

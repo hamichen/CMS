@@ -1,38 +1,36 @@
 {% extends 'layout/layout.twig' %}
+{% block pageTitle %}
+ {{ PageTitle ('頁面編修',{'icon':'ion-compose'}) }}
+{% endblock %}
 {% block content %}
-
-    <div class="row">
-        <div class="col-md-12">
-            <h1 class="page-header">頁面編修</h1>
-
-            <form id="pageForm" method="get">
-                {{ formRow(form.get('menu_id')) }}
-            </form>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
+    <div class="panel">
+        <div class="panel-body">
             <div class="row">
                 <div class="col-md-12">
-            <div class="btn-group pull-right" role="group" aria-label="..." style="margin-bottom: 10px;">
-                {% for i,b in pagekindArray %}
-                    <button type="button" class="btn btn-primary btn-append" data-kind="{{ i }}">新增 {{ b }}</button>
-                {% endfor %}
-            </div>
-            </div>
+
+                    <form id="pageForm" method="get">
+                        {{ formRow(form.get('menu_id')) }}
+                    </form>
+                </div>
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    <div id="data-list">
+
+                    <div class="row">
+                        <div class="col-md-12">
+
+                            <div id="data-list"></div>
+
+
+                        </div>
 
                     </div>
 
                 </div>
-
             </div>
-
         </div>
     </div>
+
 
 {% endblock %}
 {% block style %}
@@ -42,14 +40,23 @@
 {% endblock %}
 {% block inline %}
     <script type="text/javascript" src="{{ basePath }}/js/bootstrap-dialog.min.js"></script>
-    <script type="text/javascript" src="{{ basePath }}/js/plugins/elfinder/js/elfinder.min.js"></script>
     <script type="text/javascript" src="{{ basePath }}/js/jquery.form.min.js"></script>
     <script type="text/javascript" src="{{ basePath }}/js/jquery.MultiFile.min.js"></script>
+    <script src="//cdn.ckeditor.com/4.6.2/standard-all/ckeditor.js"></script>
     <script type="text/javascript">
         $(function () {
 
+            $("#data-list").on('click', '#pagination-div a', function(){
+                var page = $(this).data('page');
+                var id = $("select[name='menu_id']").val();
+                var url = "{{ url('cms/default',{controller:'page', action:'get-page-list'}) }}";
+                $.get(url, {id: id, page:page }, function (html) {
+                    $("#data-list").html(html);
+                });
+            });
+
             $("#data-list").on('click', '.btn-delete', function () {
-                var id = $(this).parents('tr').attr('id').substr(3);
+                var id = $(this).parents('tr').data('id');
                 var parentTr = $(this).parents('tr');
                 BootstrapDialog.show({
                     title: '刪除對話框',
@@ -76,10 +83,7 @@
                             }
                         }]
                 });
-            });
-
-
-            $(".btn-append").click(function () {
+            }).on('click','.btn-append', function () {
                 var menu_id = $("select[name='menu_id']").val();
                 var param_url = 'menu_id=' + menu_id;
                 var kind = $(this).data('kind');
@@ -101,39 +105,17 @@
                 var menu_id = $("select[name='menu_id']").val();
                 var param_url = 'menu_id=' + menu_id;
                 var kind = $(this).data('kind');
-                param_url += '&id=' + $(this).parents('tr').attr('id').substr(3);
-
-                var url = '{{ url('cms/default',{controller:'page',action:'get-page'}) }}?' + param_url;
+                param_url += '&id=' + $(this).parents('tr').data('id');
+                var url = '/cms/page/get-page?' + param_url;
                 $.get(url, function (html) {
                     $("#data-list").html(html);
                 });
             });
 
             // 文字
-            $("#data-list").on('click', '#text-btn', function () {
-                CKupdate();
-                var data = $("#setForm").serialize();
-                var menu_id = $("select[name='menu_id']").val();
-
-                data = data + '&menu_id=' + menu_id;
-                var url = '{{ url('cms/default',{controller:'page', action:'save'}) }}';
-                $.post(url, data, function (res) {
-                    if (res.success) {
-                        $("select[name='menu_id']").trigger('change');
-                    }
-                    else {
-                        BootstrapDialog.alert('請檢查錯誤的欄位');
-                        $("#setForm input").removeClass('alert-danger');
-                        $.each(res.message, function (i, v) {
-                            $("input[name='" + i + "']").addClass('alert-danger');
-                        });
-                    }
-
-                });
-            });
-
             // 檔案
-            $("#data-list").on('click', '#file-btn', function () {
+            $("#data-list").on('click', '#file-btn, #text-btn, #url-btn', function () {
+                CKupdate();
                 var menu_id = $("select[name='menu_id']").val();
                 $("#setForm input[name='menu_id']").val(menu_id);
                 $("#setForm").ajaxSubmit({
@@ -152,27 +134,7 @@
                 });
             });
 
-            //連結
-            $("#data-list").on('click', '#url-btn', function () {
-                var data = $("#setForm").serialize();
-                var menu_id = $("select[name='menu_id']").val();
-                data = data + '&menu_id=' + menu_id;
-                var url = '{{ url('cms/default',{controller:'page', action:'save'}) }}';
-                $.post(url, data, function (res) {
-                    if (res.success) {
-                        $("select[name='menu_id']").trigger('change');
-                    }
-                    else {
-                        BootstrapDialog.alert('請檢查錯誤的欄位');
-                        $("#setForm input").removeClass('alert-danger');
-                        $.each(res.message, function (i, v) {
-                            $("input[name='" + i + "']").addClass('alert-danger');
-                        });
-                    }
 
-                });
-
-            });
 
             $("select[name='menu_id']").change(function () {
                 var id = $(this).val();
@@ -186,6 +148,8 @@
 
 
             function CKupdate() {
+                if(typeof CKEDITOR === 'undefined')
+                return true;
                 for (instance in CKEDITOR.instances)
                     CKEDITOR.instances[instance].updateElement();
             }

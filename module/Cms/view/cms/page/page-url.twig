@@ -1,12 +1,64 @@
-<form method="post" id="setForm">
-{{ formRow(form.get('title')) }}
-{{ formRow(form.get('url')) }}
-{{ formRow(form.get('url_target')) }}
+<form method="post" action="{{ url('cms/default',{controller:'page', action:'save'}) }}" id="setForm"
+          accept-charset="UTF-8" enctype="multipart/form-data">
+    {{ formRow(form.get('title')) }}
+    {{ formRow(form.get('upload_file')) }}
+    {% if files %}
+        <ul class="list-group">
+            {% for v in files %}
+                <li class="list-group-item"><span data-file_id="{{ v.id }}" class="btn btn-danger btn-xs file-name"><i
+                                class="fa fa-trash-o"></i></span>
+                    <img src="{{ url('cms/default',{controller:'page', action:'download'}) }}?id={{ v.id }}" />
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    {{ formRow(form.get('link_menu')) }}
+    {{ formRow(form.get('url')) }}
+    {{ formRow(form.get('url_target')) }}
     {{ formRow(form.get('order_id')) }}
-{{ formRow(form.get('id')) }}
-<input type="hidden" name="kind" value="url">
+    {{ formRow(form.get('summary')) }}
+    {% if form.has('term') %}
+    {{ formRow(form.get('term')) }}
+    {% endif %}
+    {{ formRow(form.get('is_published')) }}
+    {{ formRow(form.get('id')) }}
+    <input type="hidden" name="kind" value="url">
+    <input type="hidden" name="menu_id" value="">
 </form>
 <button class="btn btn-primary" id="url-btn"><i class="fa fa-save"></i> 確定</button>
 <button class="btn btn-default" id="cancel-btn"><i class="fa fa-undo"></i> 放棄編輯</button>
+
+<script type="text/javascript">
+    $(function () {
+        $('#files').MultiFile({
+            accept: 'png,jpg,jpeg,gif',
+            max: 10, STRING: {
+                remove: 'X',
+                selected: '選取的檔案: $file',
+                denied: '不正確的檔案格式 $ext!',
+                duplicate: '重復的檔案:\n$file!'
+            }
+        });
+
+        $(".file-name").click(function(){
+            var id = $(this).data('file_id');
+            var parent = $(this).parents('li');
+            BootstrapDialog.confirm('確定刪除?',function(result){
+                if (result){
+                    $.get("{{ url('cms/default',{controller:'page', action:'delete-file'}) }}",
+                            {id:id}, function(res){
+                                if (res.success) {
+                                    parent.remove();
+                                }
+                                else  {
+                                    BootstrapDialog.alert('無厾刪除');
+                                }
+                            });
+                }
+            });
+        });
+
+    })
+</script>
 
 

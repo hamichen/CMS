@@ -1,0 +1,18 @@
+<p>親愛的{{ data.name }}您好:</p>
+<p></p>
+<p>歡迎您加入 CNS 會員</p>
+<p>請點擊連結，以正式開通您的會員帳號。</p>
+<p></p>
+<p>您的會員帳號為: <span style="font-weight: bold">{{ data.username }}</span></p>
+<p></p>
+<p><a href="{{ baseUri }}/user/mail-verify/{{ data.mailVerify }}">請點我</a>，以啟用您的帳號</p>
+<p></p>
+<p>如無法點選，請複製以下連結至瀏覽器網址列</p>
+
+<p>{{ baseUri }}/user/mail-verify/{{ data.mailVerify }}</p>
+
+<p>此為系統自動寄送訊息，請勿直接回覆本郵件</p>
+
+<p>感謝您註冊「CMS」會員</p>
+
+<p>{{ "now"|date('Y-m-d H:i:s') }}</p>

@@ -1,0 +1,34 @@
+{% if pageCount %}
+    <div >
+        <ul class="pagination">
+            <!-- Previous page link -->
+            {% if previous %}
+                <li><a
+                            href="/browsing/{{ previous }}">&larr;
+                        上一頁</a>
+                </li>
+            {% else %}
+                <li class="disabled"><a>&larr; 上一頁</a></li>
+            {% endif %}
+
+            <!-- Numbered page links -->
+            {% for page in pagesInRange %}
+                {%  if page != current %}
+                    <li><a href="/browsing/{{ page}}">{{ page }}</a></li>
+                {% else %}
+                    <li class="active"><a> {{ page }} </a></li>
+                {% endif %}
+            {% endfor %}
+
+            <!-- Next page link -->
+            {% if next %}
+                <li><a
+                            href="/browsing/{{ next}}">下一頁
+                        &rarr;</a>
+                </li>
+            {% else %}
+                <li class="disabled"><a>下一頁 &rarr;</a></li>
+            {% endif %}
+        </ul>
+    </div>
+{% endif %}

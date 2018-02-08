@@ -11,8 +11,7 @@ config/application.config.old
 
 
 # Data
-data/sessions/
-data/tmp/
+data/temp/
 temp/
 
 # Legacy ZF1

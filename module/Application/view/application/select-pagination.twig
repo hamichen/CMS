@@ -1,0 +1,43 @@
+{% if pageCount %}
+
+    <div class="row">
+
+        <div class="col-md-9">
+            <ul class="pagination">
+
+                <!-- Previous page link -->
+                {% if previous %}
+                    <li><a
+                                href="{{ url(route, {'page':previous , 'controller': controller,  'select':select, 'val':val}) }}">&larr;
+                        </a>
+                    </li>
+                {% else %}
+                    <li class="disabled"><a>&larr; </a></li>
+                {% endif %}
+
+                <!-- Numbered page links -->
+                {% for page in pagesInRange %}
+                    {%  if page != current %}
+                        <li><a href="{{ url(route, {'page':page , 'controller': controller, 'select':select, 'val':val}) }}">{{ page }}</a></li>
+                    {% else %}
+                        <li class="active"><a> {{ page }} </a></li>
+                    {% endif %}
+                {% endfor %}
+
+                <!-- Next page link -->
+                {% if next %}
+                    <li><a
+                                href="{{ url(route, {'page':next , 'controller': controller, 'select':select, 'val':val }) }}">
+                            &rarr;</a>
+                    </li>
+                {% else %}
+                    <li class="disabled"><a> &rarr;</a></li>
+                {% endif %}
+            </ul>
+        </div>
+        <div class="col-md-3">
+            <div class="pagination pull-right">顯示 {{ previous*itemCountPerPage+1 }}  至 {{ previous*itemCountPerPage+currentItemCount }} (共 {{ totalItemCount }} 筆)</div>
+        </div>
+
+    </div>
+{% endif %}

@@ -1,0 +1,31 @@
+{% if pageCount %}
+
+    <div >
+        <ul class="pagination">
+            <!-- Previous page link -->
+            {% if previous %}
+                <li class="page-btn" data-page="{{ previous }}"><a>&larr;</a>
+                </li>
+            {% else %}
+                <li class="disabled"><span class="btn btn-xs btn-default">&larr; </span></li>
+            {% endif %}
+
+            <!-- Numbered page links -->
+            {% for page in pagesInRange %}
+                {%  if page != current %}
+                    <li class="page-btn" data-page="{{ page }}"><span class="btn btn-xs btn-default">{{ page }}</span></li>
+                {% else %}
+                    <li class="active"><span  class="btn btn-xs btn-default"> {{ page }} </span></li>
+                {% endif %}
+            {% endfor %}
+
+            <!-- Next page link -->
+            {% if next %}
+                <li class="page-btn" data-page="{{ next }}"><span class="btn btn-xs btn-default">&rarr;</span>
+                </li>
+            {% else %}
+                <li class="disabled"><a> &rarr;</a></li>
+            {% endif %}
+        </ul>
+    </div>
+{% endif %}

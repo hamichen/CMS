@@ -1,40 +1,46 @@
 {% extends 'layout/layout.twig' %}
+{% block pageTitle %}
+    {{ PageTitle ('使用者管理') }}
+{% endblock %}
 {% block content %}
-    <div id="forms" class="panel panel-default">
-
-        <div class="panel-heading">
-            <div class="pull-right"><span class="btn btn-primary btn-edit">新增使用者</span> </div>
-            <h3>使用者列表</h3>
-
-        </div>
-
-        <div class="panel-body">
-            <table class="table table-striped table-hover">
-                <thead>
-                <tr>
-                    <th>登入帳號</th>
-                    <th>顯示名稱</th>
-                    <th>角色</th>
-                    <th>編修</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for v in data %}
-                    <tr id="tr-{{ v.id }}">
-                        <td>{{ v.username }}</td>
-                        <td>{{ v.display_name }}</td>
-                        <td>{{ roleArr[v.role]}}</td>
-                        <td>
-                            <span class="btn btn-primary btn-xs btn-edit">修改 </span>
-                            <span class="btn btn-warning btn-xs btn-delete">刪除 </span>
-                        </td>
+ <div class="row">
+        <div class="col-sm-8">
+        <div class="card">
+            <div class="card-header">
+                <div class="pull-right">
+                    <span class="btn btn-primary btn-edit btn-sm btn-append"><i class="fa fa-plus"></i> 新增使用者</span>
+                </div>
+            </div>
+            <div class="card-body">
+                <table class="table table-striped table-hover">
+                    <thead>
+                    <tr>
+                        <th>登入帳號</th>
+                        <th>顯示名稱</th>
+                        <th>角色</th>
+                        <th>編修</th>
                     </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-
+                    </thead>
+                    <tbody>
+                    {% for v in data %}
+                        <tr id="tr-{{ v.id }}">
+                            <td>{{ v.username }}</td>
+                            <td>{{ v.display_name }}</td>
+                            <td>{{ v.role}}</td>
+                            <td>
+                                <span class="btn btn-primary btn-xs btn-edit">修改 </span>
+                                <span class="btn btn-warning btn-xs btn-delete">刪除 </span>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <!--end: BOX CONTENT-->
         </div>
     </div>
+ </div>
+
 {% endblock %}
 
 {% block style %}
@@ -46,12 +52,12 @@
     <script type="text/javascript">
         $(function(){
             $(".btn-edit").click(function(){
-                if ($(this).text() == '新增使用者') {
-                    var url = '{{ url('admin/default',{controller:'user', action:'edit'}) }}';
+                if ($(this).hasClass('btn-append')) {
+                    var url = '/admin/user/edit';
                 }
                 else {
                     var id = $(this).parents('tr').attr('id').substr(3);
-                    var url = '{{ url('admin/default',{controller:'user', action:'edit'}) }}?id='+id;
+                    var url = '/admin/user/edit?id='+id;
                 }
 
                 BootstrapDialog.show({
@@ -59,11 +65,11 @@
                     message: $('<div></div>').load(url),
                     buttons: [{
                         label: '確定',
-                        icon: 'glyphicon glyphicon-ok',
+                        icon: 'ion-checkmark',
                         cssClass: 'btn-primary',
                         action: function(dialogItself) {
                             var data = $("#userForm").serialize();
-                            var url = '{{ url('admin/default', {controller:'user', action:'save'}) }}';
+                            var url = '/admin/user/save';
                             $.post(url, data, function(res){
                                 if (res.success) {
                                     window.location.reload();
@@ -96,7 +102,7 @@
                         label: '確定',
                         cssClass: 'btn-warning',
                         action: function(dialogItself) {
-                            var url = '{{ url('admin/default', {controller:'user', action:'delete'}) }}';
+                            var url = '/admin/user/delete';
                             $.get(url, {id:id}, function(res){
                                 if (res.success) {
                                     window.location.reload();

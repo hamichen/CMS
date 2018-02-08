@@ -1,0 +1,9 @@
+BootstrapDialog.DEFAULT_TEXTS[BootstrapDialog.TYPE_DEFAULT] = '訊息';
+BootstrapDialog.DEFAULT_TEXTS[BootstrapDialog.TYPE_INFO] = '訊息';
+BootstrapDialog.DEFAULT_TEXTS[BootstrapDialog.TYPE_PRIMARY] = '訊息';
+BootstrapDialog.DEFAULT_TEXTS[BootstrapDialog.TYPE_SUCCESS] = '成功';
+BootstrapDialog.DEFAULT_TEXTS[BootstrapDialog.TYPE_WARNING] = '注意';
+BootstrapDialog.DEFAULT_TEXTS[BootstrapDialog.TYPE_DANGER] = '錯誤';
+BootstrapDialog.DEFAULT_TEXTS['OK'] = '確定';
+BootstrapDialog.DEFAULT_TEXTS['CANCEL'] = '取消';
+BootstrapDialog.DEFAULT_TEXTS['CONFIRM'] = '確認與否';

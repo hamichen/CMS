@@ -1,66 +1,74 @@
 <?php
 /**
- * Zend Framework (http://framework.zend.com/)
- *
  * @link      http://github.com/zendframework/ZendSkeletonApplication for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright Copyright (c) 2005-2016 Zend Technologies USA Inc. (http://www.zend.com)
  * @license   http://framework.zend.com/license/new-bsd New BSD License
  */
 
-return array(
-    'router' => array(
-        'routes' => array(
-            'home' => array(
-                'type' => 'Zend\Mvc\Router\Http\Literal',
-                'options' => array(
+namespace Application;
+
+use Base\Factory\BaseFactory;
+use Zend\Router\Http\Literal;
+use Zend\Router\Http\Segment;
+
+return [
+    'router' => [
+        'routes' => [
+            'home' => [
+                'type' => Literal::class,
+                'options' => [
                     'route'    => '/',
-                    'defaults' => array(
-                        'controller' => 'Application\Controller\Index',
+                    'defaults' => [
+                        'module' => __NAMESPACE__,
+                        'controller' => Controller\IndexController::class,
                         'action'     => 'index',
-                    ),
-                ),
-            ),
-            'menu' => array(
-                'type' => 'Zend\Mvc\Router\Http\Literal',
+                    ],
+                ],
+            ],
+
+            'file' => [
+                'type' => Segment::class,
+                'options' => [
+                    'route'    => '/file[/:action/:id]',
+                    'defaults' => [
+                        'module' => __NAMESPACE__,
+                        'controller'    => Controller\FileController::class,
+                        'action'     => 'index',
+                    ],
+                ],
+            ],
+            'view' => array(
+                'type'    => Segment::class,
                 'options' => array(
-                    'route'    => '/m',
+                    'route'    => '/view/:id[/:name].html',
+//                    'constraints' => array(
+//                        'id' => '[0-9]+'
+//                    ),
                     'defaults' => array(
-                        'controller' => 'Application\Controller\Menu',
-                        'action'     => 'index',
+                        'module' => __NAMESPACE__,
+                        'controller'    => Controller\IndexController::class,
+                        'action'        => 'view',
                     ),
                 ),
-                'may_terminate' => true,
-                'child_routes' => array(
-                    'default' => array(
-                        'type' => 'Segment',
-                        'options' => array(
-                            'route' => '/:id',
-                            'constraints' => array(
-                                 'id' => '[0-9]*'
-                            ),
-                            'defaults' => array()
-                        )
-                    )
-                )
+                'may_terminate' => false,
+
             ),
-            // The following is a route to simplify getting started creating
-            // new controllers and actions without needing to create a new
-            // module. Simply drop new controllers in, and you can access them
-            // using the path /application/:controller/:action
+
+
             'application' => array(
-                'type'    => 'Literal',
+                'type'    => Literal::class,
                 'options' => array(
                     'route'    => '/application',
                     'defaults' => array(
-                        '__NAMESPACE__' => 'Application\Controller',
-                        'controller'    => 'Index',
+                        'module' => __NAMESPACE__,
+                        'controller'    => Controller\IndexController::class,
                         'action'        => 'index',
                     ),
                 ),
                 'may_terminate' => true,
                 'child_routes' => array(
                     'default' => array(
-                        'type'    => 'Segment',
+                        'type'    => Segment::class,
                         'options' => array(
                             'route'    => '/[:controller[/:action]]',
                             'constraints' => array(
@@ -68,65 +76,71 @@ return array(
                                 'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
                             ),
                             'defaults' => array(
+                                'module' => __NAMESPACE__,
+                                'controller'    => Controller\IndexController::class,
                             ),
                         ),
                     ),
+
                 ),
             ),
-        ),
-    ),
-    'service_manager' => array(
-        'abstract_factories' => array(
-            'Zend\Cache\Service\StorageCacheAbstractServiceFactory',
-            'Zend\Log\LoggerAbstractServiceFactory',
-        ),
-        'factories' => array(
-            'translator' => 'Zend\Mvc\Service\TranslatorServiceFactory',
-        ),
-    ),
-    'translator' => array(
-        'locale' => 'zh_TW',
-        'translation_file_patterns' => array(
-            array(
-                'type'     => 'gettext',
-                'base_dir' => __DIR__ . '/../language',
-                'pattern'  => '%s.mo',
+
+            'index-file-page' => array(
+                'type' => Segment::class,
+                'options' => array(
+                    'route' => '/browsing[/:page][/:select][/:val]',
+                    'constraints' => array(
+                        'page' => '[0-9]+'
+                    ),
+                    'defaults' => array(
+                        'module' => __NAMESPACE__,
+                        'controller'    => Controller\FileController::class,
+                        'action' => 'index',
+                    )
+                )
             ),
-        ),
-        'translation_files' => array(
-            array(
-                'type'     => 'phparray',
-                'filename' => __DIR__ . '/../language/Zend_Validate.php',
-            ),
-        ),
-    ),
-    'controllers' => array(
-        'invokables' => array(
-            'Application\Controller\Index' => 'Application\Controller\IndexController',
-            'Application\Controller\Menu' => 'Application\Controller\MenuController'
-        ),
-    ),
-    'view_manager' => array(
+        ],
+    ],
+    'controllers' => [
+        'factories' => [
+            Controller\IndexController::class => BaseFactory::class,
+            Controller\FileController::class => BaseFactory::class,
+        ],
+        'aliases' => [
+            'index' => Controller\IndexController::class,
+            'file' => Controller\FileController::class,
+        ]
+
+    ],
+     'view_helpers' => [
+        'factories' => [
+            View\Helper\SelectedLayout::class => View\Helper\Service\SelectLayoutFactory::class,
+            View\Helper\FilterWhitespace::class => View\Helper\Service\FilterWhitespaceFactory::class,
+        ],
+        'aliases' => [
+            'SelectedLayout' => View\Helper\SelectedLayout::class,
+            'FilterWhitespace' => View\Helper\FilterWhitespace::class,
+        ],
+
+    ],
+
+    'view_manager' => [
+        'strategies' => [
+            'ViewJsonStrategy'
+        ],
         'display_not_found_reason' => true,
         'display_exceptions'       => true,
         'doctype'                  => 'HTML5',
         'not_found_template'       => 'error/404',
         'exception_template'       => 'error/index',
-        'template_map' => array(
+        'template_map' => [
             'layout/layout'           => __DIR__ . '/../view/layout/layout.phtml',
             'application/index/index' => __DIR__ . '/../view/application/index/index.phtml',
             'error/404'               => __DIR__ . '/../view/error/404.phtml',
             'error/index'             => __DIR__ . '/../view/error/index.phtml',
-        ),
-        'template_path_stack' => array(
+        ],
+        'template_path_stack' => [
             __DIR__ . '/../view',
-        ),
-    ),
-    // Placeholder for console routes
-    'console' => array(
-        'router' => array(
-            'routes' => array(
-            ),
-        ),
-    ),
-);
+        ],
+    ],
+];

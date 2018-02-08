@@ -1,34 +1,37 @@
 {% extends 'layout/layout.twig' %}
-{% block content %}
-<div class="row-fluid">
-	<div class="col-xs-2">
+{% block pageTitle %}
+    {{ PageTitle ('個人資料編修', {'icon':'ion-android-contact'}) }}
+{% endblock %}
+    {% block content %}
+        <div class="panel">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-sm-2">
 
-		{% include 'user/menu.twig' %}
-	</div>
-	<div class="col-xs-10">
-        <h2 class="page-header">個人資料</h2>
+                        {% include 'user/menu.twig' %}
+                    </div>
+                    <div class="col-sm-8">
+                        <p>您好! {{ user.name }}</p>
+                        <p><span class="label-info">登入帳號:</span> {{ user.username }}</p>
+                        <p><span class="label-info">任職單位:</span> {{ user.mrUnit.fullName }}</p>
+                                {{ form(form) }}
+                                <button class="btn btn-primary" id="submit-btn">確定修改</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endblock content %}
 
-		<p>
-            您好 {{ user.teachers[0].truename }} !
-		</p>
-		<p>從"你的帳戶"可以快速查閱您的帳戶資料。點擊左列的連結可檢視或修改帳戶資料。</p>
-		<div class="row">
-			<div class="well">
-				<h3 class="page-header">帳號資訊</h3>
-				<p>
-				登入帳號: {{ user.username }}
-				</p>
-				<p>
-				電子郵件: {{ user.email }}
-				</p>
-				<p>
+{% block inline %}
 
-				</p>
+    <script>
+        $(function () {
+            $("#submit-btn").click(function () {
+                $("#user_form").submit();
+            });
+        })
+    </script>
 
-			</div>
-
-		</div>
-	</div>
-</div>
-{% endblock content %}
-
+{% endblock %}

@@ -7,23 +7,24 @@
             {% for v in files %}
                 <li class="list-group-item"><span data-file_id="{{ v.id }}" class="btn btn-danger btn-xs file-name"><i
                                 class="fa fa-trash-o"></i></span>
-                    <a href="{{ url('cms/default',{controller:'page', action:'download'}) }}?id={{ v.id }}">{{ v.sourceName }}</a>
+                    <a href="{{ url('cms/default',{controller:'page', action:'download'}) }}?id={{ v.fileName }}">{{ v.sourceName }}</a>
                 </li>
             {% endfor %}
         </ul>
     {% endif %}
-    {{ formRow(form.get('tags')) }}
+    {{ formRow(form.get('is_published')) }}
     {{ formRow(form.get('order_id')) }}
     {{ formRow(form.get('id')) }}
     <input type="hidden" name="kind" value="file">
-    <input type="hidden" name="menu_id" value="file">
+    <input type="hidden" name="menu_id" value="">
 </form>
 <button class="btn btn-primary" id="file-btn"><i class="fa fa-save"></i> 確定</button>
 <button class="btn btn-default" id="cancel-btn"><i class="fa fa-undo"></i> 放棄編輯</button>
+
 <script type="text/javascript">
     $(function () {
         $('#files').MultiFile({
-            accept: '{{ config().upload.allow_type }}',
+            accept: '{{ config().file_type.cms.file }}',
             max: 10, STRING: {
                 remove: 'X',
                 selected: '選取的檔案: $file',
@@ -43,12 +44,13 @@
                                     parent.remove();
                                 }
                                 else  {
-                                    BootstrapDialog.alert('無厾刪除');
+                                    BootstrapDialog.alert('無法刪除');
                                 }
                             });
                 }
             });
         });
+
 
     })
 </script>

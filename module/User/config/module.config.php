@@ -1,103 +1,177 @@
 <?php
+
 namespace User;
 
-return array(
-    'router' => array(
-        'routes' => array(
-            'user' => array(
-                'type' => 'Literal',
-                'options' => array(
+use Base\Factory\BaseFactory;
+use Zend\Router\Http\Literal;
+use Zend\Router\Http\Segment;
+
+return [
+    'router' => [
+        'routes' => [
+            'user' => [
+                'type' => Literal::class,
+                'options' => [
                     'route' => '/user',
-                    'defaults' => array(
-                        '__NAMESPACE__' => 'User\Controller',
-                        'controller' => 'Set',
+                    'defaults' => [
+                        'module' => __NAMESPACE__,
+                        'controller' => Controller\SetController::class,
                         'action' => 'index'
-                    )
-                ),
-                'may_terminate' => true,
-                'child_routes' => array(
-                    'default' => array(
-                        'type' => 'Segment',
-                        'options' => array(
-                            'route' => '/[:controller[/:action]]',
-                            'constraints' => array(
+                    ]
+                ],
+               // 'may_terminate' => true,
+                'child_routes' => [
+                    'default' => [
+                        'type' => Segment::class,
+                        'options' => [
+                            'route' => '[/[:controller[/:action]]]',
+                            'constraints' => [
+                                'module' => __NAMESPACE__,
                                 'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
                                 'action' => '[a-zA-Z][a-zA-Z0-9_-]*'
-                            ),
-                            'defaults' => array()
-                        )
-                    ),
-                    'login' => array(
-                        'type' => 'Segment',
-                        'options' => array(
+                            ],
+                            'defaults' => []
+                        ]
+                    ],
+                    'login' => [
+                        'type' => Segment::class,
+                        'options' => [
                             'route' => '/login[/:ap]',
-                            'defaults' => array(
-                                '__NAMESPACE__' => 'User\Controller',
-                                'controller' => 'Sign',
+                            'defaults' => [
+                                'module' => __NAMESPACE__,
+                                'controller' => Controller\SignController::class,
                                 'action' => 'login'
-                            )
-                        )
-                    ),
-                    'logout' => array(
-                        'type' => 'Literal',
-                        'options' => array(
+                            ]
+                        ]
+                    ],
+                    'refresh' => [
+                        'type' => Segment::class,
+                        'options' => [
+                            'route' => '/refresh',
+                            'defaults' => [
+                                'module' => __NAMESPACE__,
+                                'controller' => Controller\SignController::class,
+                                'action' => 'refresh'
+                            ]
+                        ]
+                    ],
+                    'logout' => [
+                        'type' => Literal::class,
+                        'options' => [
                             'route' => '/logout',
-                            'defaults' => array(
-                                '__NAMESPACE__' => 'User\Controller',
-                                'controller' => 'Sign',
+                            'defaults' => [
+                                'module' => __NAMESPACE__,
+                                'controller' => Controller\SignController::class,
                                 'action' => 'logout'
-                            )
-                        )
-                    ),
-                    'lostpassword' => array(
+                            ]
+                        ]
+                    ],
+                    'register' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/register',
+                            'defaults' => [
+                                'module' => __NAMESPACE__,
+                                'controller' => Controller\SignController::class,
+                                'action' => 'register'
+                            ]
+                        ]
+                    ],
+                    'mail_verify' => [
+                        'type' => Segment::class,
+                        'options' => [
+                            'route' => '/mail-verify/:id',
+                            'defaults' => [
+                                'module' => __NAMESPACE__,
+                                'controller' => Controller\SignController::class,
+                                'action' => 'mail-verify'
+                            ]
+                        ]
+                    ],
+                    'register-success' => [
+                        'type' => Segment::class,
+                        'options' => [
+                            'route' => '/register-success',
+                            'defaults' => [
+                                'module' => __NAMESPACE__,
+                                'controller' => Controller\SignController::class,
+                                'action' => 'register-success'
+                            ]
+                        ]
+                    ],
+                    'lostpassword' => [
                         'type' => 'Literal',
-                        'options' => array(
+                        'options' => [
                             'route' => '/lost-password',
-                            'defaults' => array(
-                                '__NAMESPACE__' => 'User\Controller',
+                            'defaults' => [
+                                'module' => __NAMESPACE__,
                                 'controller' => 'Sign',
                                 'action' => 'lost-password'
-                            )
-                        )
-                    ),
-                    'resetpassword' => array(
-                        'type' => 'Segment',
-                        'options' => array(
+                            ]
+                        ]
+                    ],
+                    'resetpassword' => [
+                        'type' => Segment::class,
+                        'options' => [
                             'route' => '/reset-password[/:code]',
-                            'defaults' => array(
-                                '__NAMESPACE__' => 'User\Controller',
+                            'defaults' => [
+                                'module' => __NAMESPACE__,
                                 'controller' => 'Sign',
                                 'action' => 'reset-password'
-                            )
-                        )
-                    )
-                )
-            ),
-            'captcha' => array(
-                'type' => 'segment',
-                'options' => array(
+                            ]
+                        ]
+                    ]
+                ]
+            ],
+            'captcha' => [
+                'type' => Segment::class,
+                'options' => [
                     'route' => '/captcha[/[:id]]',
-                    'defaults' => array(
-                        '__NAMESPACE__' => 'User\Controller',
-                        'controller' => 'sign',
+                    'defaults' => [
+                        'module' => __NAMESPACE__,
+                        'controller' => Controller\SignController::class,
                         'action' => 'generate'
-                    )
-                )
-            )
+                    ]
+                ]
+            ]
+        ]
+    ],
+    'doctrine' => array(
+        'driver' => array(
+
+            'sfs_entities' => [
+                'class' => '\Doctrine\ORM\Mapping\Driver\AnnotationDriver',
+                'cache' => 'array',
+                'paths' => [
+                    __DIR__ . '/../src/Entity'
+                ]
+            ],
+            'orm_center' => [
+                'class' => 'Doctrine\ORM\Mapping\Driver\DriverChain',
+                'drivers' => [
+                    'User\Entity' => 'sfs_entities'
+                ]
+            ]
+
         )
     ),
     'controllers' => array(
-        'invokables' => array(
-            'User\Controller\Sign' => 'User\Controller\SignController',
-            'User\Controller\Set' => 'User\Controller\SetController'
-        )
+        'factories' => [
+            Controller\SignController::class => BaseFactory::class,
+            Controller\SetController::class => BaseFactory::class,
+        ],
+        'aliases' => [
+            'user-sign' => Controller\SignController::class,
+            'user-set' => Controller\SetController::class
+        ]
     ),
     'view_manager' => array(
         'template_path_stack' => array(
             __DIR__ . '/../view'
         )
     ),
-    
 
-);
+
+
+];
 

@@ -1,9 +1,8 @@
-{{ docType() }}
 <html lang="en">
 <head>
     <meta charset="utf-8">
     <title>
-        {% block title %}ZF2 {{ translate('Skeleton Application') }}{% endblock title %}
+        {% block title %} Cloud-school-管理平台{% endblock title %}
     </title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -26,7 +25,7 @@
     {% block script %}{% endblock script %}
 </head>
 <body>
-{% set userIdentity = UserIdentity() %}
+{% set userIdentity = userIdentity() %}
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container">
         <div class="navbar-header">
@@ -35,7 +34,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="{{ url('home') }}"><img src="{{ basePath() }}/img/zf2-logo.png" alt="Zend Framework 2"/>&nbsp;{{ translate('Skeleton Application') }}</a>
+            <a class="navbar-brand" href="{{ url('home') }}"><img src="{{ basePath() }}/img/logo.png" style="height: 25px" alt="Cloud-school logo"/> Cloud-school 管理平台</a>
 
 
         </div>
@@ -47,9 +46,15 @@
                     <li class="dropdown">
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">管理者選單 <b class="caret"></b></a>
                         <ul class="dropdown-menu">
-                            <li><a href="/admin/user">使用者管理</a></li>
+                            <li class="dropdown-header">訊息公告管理</li>
+                            <li  class="menu-item menu-item-type-post_type menu-item-object-page"><a href="/cms/page"><i class="fa fa-cog"></i> 頁面管理</a></li>
+                            <li  class="menu-item menu-item-type-post_type menu-item-object-page"><a href="/cms/menu"><i class="fa fa-cog"></i> 選單管理</a></li>
                             <li class="divider"></li>
-                            <li><a href="/admin/role">權限管理</a></li>
+                            {% if userIdentity.role == 'admin' %}
+                                <li class="menu-item menu-item-type-post_type menu-item-object-page"><a href="/admin/user"><i class="fa fa-user"></i> 使用者管理</a></li>
+                            {% endif %}
+                            <li class="menu-item menu-item-type-post_type menu-item-object-page"><a href="/user/logout"><i class="fa fa-sign-out"></i> {{ userIdentity.username }} 登出</a></li>
+
                         </ul>
                     </li>
                     <li class="pull-right">
@@ -60,7 +65,7 @@
 
             {% if userIdentity %}
                 <div class="navbar-right">
-                    <span class="label label-info">{{ userIdentity.displayName }} 登入 </span>,
+                    <span class="label label-info">{{ userIdentity.displayName|default(userIdentity.username) }} 登入 </span>,
                     <a class="label label-warning" href="{{ url('user/logout') }}">登出</a>
                 </div>
             {% else %}
@@ -80,7 +85,7 @@
     {% block content %}{{ content|raw }}{% endblock content %}
     <hr>
     <footer>
-        <p>&copy; 2005 - 2014 by Zend Technologies Ltd. {{ translate('All rights reserved.') }}</p>
+        <p class="pull-right"><strong>Copyright &copy; 2016 - {{ "now"|date("Y") }} <a href="http://www.cloudschool.tw">cloudschool.tw</a>.</strong></p>
     </footer>
 </div> <!-- /container -->
 {% block inline %}{% endblock inline %}
