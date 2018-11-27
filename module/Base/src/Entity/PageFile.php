@@ -18,7 +18,7 @@ use Zend\InputFilter\InputFilterInterface;
 /**
  * Base\Entity\PageFile
  *
- * @ORM\Entity(repositoryClass="PageFileRepository")
+ * @ORM\Entity
  * @ORM\Table(name="page_file", indexes={@ORM\Index(name="fk_page_file_page1_idx", columns={"page_id"})})
  */
 class PageFile implements InputFilterAwareInterface
