@@ -8,7 +8,7 @@
             {% for v in files %}
                 <li class="list-group-item"><span data-file_id="{{ v.id }}" class="btn btn-danger btn-xs file-name"><i
                                 class="fa fa-trash-o"></i></span>
-                    <img src="{{ url('cms/default',{controller:'page', action:'download'}) }}?id={{ v.id }}" />
+                    <img src="{{ url('cms/default',{controller:'page', action:'download'}) }}?id={{ v.fileName }}" />
                 </li>
             {% endfor %}
         </ul>
