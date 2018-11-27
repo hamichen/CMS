@@ -637,10 +637,14 @@ class PageController extends BaseController
     public function downloadAction()
     {
         $id = $this->params()->fromQuery('id');
-        /** @var \Zend\Http\Response $tmpResponse */
+        $em = $this->getEntityManager();
+        /** @var  $pageRes \Base\Entity\PageFile */
+        $pageRes = $em->getRepository('Base\Entity\PageFile')->find($id);
+        $dId = $pageRes->getFileName();
+        /** @var \Zend\Http\Response $tmpRespone */
         $tmpResponse = $this->getResponse();
         $dm = $this->getDocumentManager();
-        $data = $dm->getRepository('Base\Document\CmsFile')->find($id);
+        $data = $dm->getRepository('Base\Document\CmsFile')->find($dId);
         if ($data) {
             $tmpResponse->getHeaders()->addHeaderLine('Content-Type', $data->getType())
                 ->addHeaderLine('Content-Disposition', 'attachment; filename="' . $data->getName() . '"')
