@@ -20,6 +20,10 @@ class IndexController extends BaseController
     {
         $viewModel = new ViewModel();
 
+        $em = $this->getEntityManager();
+        $res = $em->getRepository('Base\Entity\Page')->findAll();
+
+        $viewModel->setVariable('data', $res);
 
         return $viewModel;
     }

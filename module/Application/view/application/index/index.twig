@@ -1,41 +1,8 @@
 {% extends 'layout/layout.twig' %}
 {% block content %}
-    {% set memo = SystemPage('首頁公告') %}
-    {% if memo.content %}
-        <div class="block">
-                    <h3><i class="ion-speakerphone"> 系統公告</i></h3>
-                    {{ memo.content|raw }}
-        </div>
-    {% endif %}
-    <div class="panel">
-        <div class="panel-heading">
-            <span class="btn pull-right" id="print-it"><i class="ion-printer"></i> 友善列印</span>
-        <h3><i class="ion-ios-calendar-outline"></i> 登錄活動列表</h3>
-        </div>
-        <div class="panel-body">
-            <div class="row">
-                <div class="col-md-12">
-                    <div id='loading'>loading...</div>
-                    <div id='calendar'></div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <ul>
+    {% for v in data %}
+        <li>{{ v.title }} {{ v.content|raw }} {{ v.createTime.format('Y年m月d日 H:i:s') }}</li>
+    {% endfor %}
+    </ul>
 {% endblock content %}
-{% block style %}
-    <link rel="stylesheet" href="{{ basePath }}/css/bootstrap-dialog.min.css">
-    <link rel="stylesheet" href="{{ basePath }}/js/plugins/fullcalendar/fullcalendar.min.css">
-    <link rel="stylesheet" href="{{ basePath }}/js/plugins/fullcalendar/fullcalendar.print.min.css"  rel='stylesheet' media='print'>
-{% endblock style %}
-{% block inline %}
-    <script type="text/javascript" src="{{ basePath }}/js/printPreview.js"></script>
-    <script type="text/javascript" src="{{ basePath }}/js/bootstrap-dialog.min.js"></script>
-    <script type="text/javascript" src="{{ basePath }}/js/plugins/fullcalendar/lib/moment.min.js"></script>
-    <script type="text/javascript" src="{{ basePath }}/js/plugins/fullcalendar/fullcalendar.min.js"></script>
-    <script type="text/javascript" src="{{ basePath }}/js/plugins/fullcalendar/locale/zh-tw.js"></script>
-    <script type="text/javascript">
-        $(function () {
-
-        })
-    </script>
-{% endblock inline %}

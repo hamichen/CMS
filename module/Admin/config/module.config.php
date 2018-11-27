@@ -53,6 +53,22 @@ return [
                             ]
                         ]
                     ],
+                    'note' => [
+                        'type' => Segment::class,
+                        'options' => [
+                            'route' => '/note[/:action]',
+                            'name' => '記事本',
+                            'constraints' => [
+                                'module' => __NAMESPACE__,
+                                'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                'action' => '[a-zA-Z][a-zA-Z0-9_-]*'
+                            ],
+                            'defaults' => [
+                                'controller' => Controller\NoteController::class,
+                                'action' => 'index'
+                            ]
+                        ]
+                    ],
                     'api-resource' => [
                         'type' => Segment::class,
                         'options' => [
@@ -78,9 +94,12 @@ return [
         'factories' => [
             Controller\IndexController::class => BaseFactory::class,
             Controller\UserController::class => BaseFactory::class,
+            Controller\NoteController::class => BaseFactory::class,
+
         ],
         'aliases' => [
             'user' => Controller\UserController::class,
+            'note' => Controller\NoteController::class,
         ]
 
     ],

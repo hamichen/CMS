@@ -633,18 +633,40 @@ class PageController extends BaseController
         return $jsonModel;
     }
 
+//
+//    public function imageAction()
+//    {
+//        $id = $this->params()->fromQuery('id');
+//        $em = $this->getEntityManager();
+//        /** @var  $pageRes \Base\Entity\PageFile */
+//        $pageRes = $em->getRepository('Base\Entity\PageFile')->find($id);
+//        $dId = $pageRes->getFileName();
+////        echo $dId;
+////        exit;
+//        /** @var \Zend\Http\Response $tmpRespone */
+//        $tmpResponse = $this->getResponse();
+//        $dm = $this->getDocumentManager();
+//        $data = $dm->getRepository('Base\Document\CmsFile')->find($dId);
+//        if ($data) {
+//            $tmpResponse->getHeaders()->addHeaderLine('Content-Type', $data->getType())
+//                ->addHeaderLine('Content-Disposition', 'attachment; filename="' . $data->getName() . '"')
+//                ->addHeaderLine('Content-Length', $data->getLength());
+//            $tmpResponse->setContent($data->getFile()->getBytes());
+//            return $tmpResponse;
+//        } else {
+//            return $tmpResponse->setStatusCode(404);
+//        }
+//    }
+
 
     public function downloadAction()
     {
         $id = $this->params()->fromQuery('id');
-        $em = $this->getEntityManager();
-        /** @var  $pageRes \Base\Entity\PageFile */
-        $pageRes = $em->getRepository('Base\Entity\PageFile')->find($id);
-        $dId = $pageRes->getFileName();
+
         /** @var \Zend\Http\Response $tmpRespone */
         $tmpResponse = $this->getResponse();
         $dm = $this->getDocumentManager();
-        $data = $dm->getRepository('Base\Document\CmsFile')->find($dId);
+        $data = $dm->getRepository('Base\Document\CmsFile')->find($id);
         if ($data) {
             $tmpResponse->getHeaders()->addHeaderLine('Content-Type', $data->getType())
                 ->addHeaderLine('Content-Disposition', 'attachment; filename="' . $data->getName() . '"')
@@ -655,6 +677,7 @@ class PageController extends BaseController
             return $tmpResponse->setStatusCode(404);
         }
     }
+
 
     /**
      * 設定關鍵字

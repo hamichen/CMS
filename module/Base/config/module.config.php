@@ -25,7 +25,15 @@ return [
                     __NAMESPACE__ . '\Entity' => __NAMESPACE__ . '_driver'
                 ]
             ],
-
+            __NAMESPACE__ . '_odm_driver' => [
+                'class' => 'Doctrine\ODM\MongoDB\Mapping\Driver\AnnotationDriver',
+                'paths' => [__DIR__ . '/../src/Document']
+            ],
+            'odm_default' => [
+                'drivers' => [
+                    __NAMESPACE__ . '\Document' => __NAMESPACE__ . '_odm_driver'
+                ]
+            ]
         ],
 
     ],
