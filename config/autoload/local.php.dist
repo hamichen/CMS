@@ -40,7 +40,7 @@ return [
 
     // theme file
     'default_layout' =>[
-        'name' => 'layout-vali'
+        'name' => 'layout-timer'
     ],
     // 驗證碼設定
     'captucha-image' => array(
