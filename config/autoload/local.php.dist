@@ -43,7 +43,7 @@ return [
         'name' => 'layout-timer'
     ],
     // 驗證碼設定
-    'captucha-image' => array(
+    'captcha-image' => array(
         'font' => './fonts/arial.ttf',
         'width' => 265,
         'height' => 45,
