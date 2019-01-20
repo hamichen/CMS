@@ -16,12 +16,14 @@ use Zend\InputFilter\InputFilterAwareInterface;
 use Zend\InputFilter\InputFilterInterface;
 
 /**
- * Base\Entity\RoleInherit
+ * Base\Entity\TeacherCourse
  *
- * @ORM\Entity(repositoryClass="RoleInheritRepository")
- * @ORM\Table(name="role_inherit", indexes={@ORM\Index(name="fk_role_has_role_role2_idx", columns={"parent_id"}), @ORM\Index(name="fk_role_has_role_role1_idx", columns={"role_id"})})
+ * 教師任課資料
+ *
+ * @ORM\Entity(repositoryClass="TeacherCourseRepository")
+ * @ORM\Table(name="teacher_course", indexes={@ORM\Index(name="fk_teacher_course_semester_teacher1_idx", columns={"semester_teacher_id"}), @ORM\Index(name="fk_teacher_course_semester_class1_idx", columns={"semester_class_id"})})
  */
-class RoleInherit implements InputFilterAwareInterface
+class TeacherCourse implements InputFilterAwareInterface
 {
     /**
      * Instance of InputFilterInterface.
@@ -38,26 +40,40 @@ class RoleInherit implements InputFilterAwareInterface
     protected $id;
 
     /**
-     * @ORM\Column(type="integer")
+     * 科目
+     *
+     * @ORM\Column(type="string", length=45, nullable=true)
      */
-    protected $role_id;
+    protected $subject_name;
+
+    /**
+     * 節數
+     *
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    protected $section_number;
 
     /**
      * @ORM\Column(type="integer")
      */
-    protected $parent_id;
+    protected $semester_teacher_id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Role", inversedBy="roleInheritRelatedByRoleIds")
-     * @ORM\JoinColumn(name="role_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
+     * @ORM\Column(type="integer")
      */
-    protected $roleRelatedByRoleId;
+    protected $semester_class_id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Role", inversedBy="roleInheritRelatedByParentIds")
-     * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
+     * @ORM\ManyToOne(targetEntity="SemesterTeacher", inversedBy="teacherCourses")
+     * @ORM\JoinColumn(name="semester_teacher_id", referencedColumnName="id", nullable=false)
      */
-    protected $roleRelatedByParentId;
+    protected $semesterTeacher;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="SemesterClass", inversedBy="teacherCourses")
+     * @ORM\JoinColumn(name="semester_class_id", referencedColumnName="id", nullable=false)
+     */
+    protected $semesterClass;
 
     public function __construct()
     {
@@ -67,7 +83,7 @@ class RoleInherit implements InputFilterAwareInterface
      * Set the value of id.
      *
      * @param integer $id
-     * @return \Base\Entity\RoleInherit
+     * @return \Base\Entity\TeacherCourse
      */
     public function setId($id)
     {
@@ -87,95 +103,141 @@ class RoleInherit implements InputFilterAwareInterface
     }
 
     /**
-     * Set the value of role_id.
+     * Set the value of subject_name.
      *
-     * @param integer $role_id
-     * @return \Base\Entity\RoleInherit
+     * @param string $subject_name
+     * @return \Base\Entity\TeacherCourse
      */
-    public function setRoleId($role_id)
+    public function setSubjectName($subject_name)
     {
-        $this->role_id = $role_id;
+        $this->subject_name = $subject_name;
 
         return $this;
     }
 
     /**
-     * Get the value of role_id.
+     * Get the value of subject_name.
+     *
+     * @return string
+     */
+    public function getSubjectName()
+    {
+        return $this->subject_name;
+    }
+
+    /**
+     * Set the value of section_number.
+     *
+     * @param integer $section_number
+     * @return \Base\Entity\TeacherCourse
+     */
+    public function setSectionNumber($section_number)
+    {
+        $this->section_number = $section_number;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of section_number.
      *
      * @return integer
      */
-    public function getRoleId()
+    public function getSectionNumber()
     {
-        return $this->role_id;
+        return $this->section_number;
     }
 
     /**
-     * Set the value of parent_id.
+     * Set the value of semester_teacher_id.
      *
-     * @param integer $parent_id
-     * @return \Base\Entity\RoleInherit
+     * @param integer $semester_teacher_id
+     * @return \Base\Entity\TeacherCourse
      */
-    public function setParentId($parent_id)
+    public function setSemesterTeacherId($semester_teacher_id)
     {
-        $this->parent_id = $parent_id;
+        $this->semester_teacher_id = $semester_teacher_id;
 
         return $this;
     }
 
     /**
-     * Get the value of parent_id.
+     * Get the value of semester_teacher_id.
      *
      * @return integer
      */
-    public function getParentId()
+    public function getSemesterTeacherId()
     {
-        return $this->parent_id;
+        return $this->semester_teacher_id;
     }
 
     /**
-     * Set Role entity related by `role_id` (many to one).
+     * Set the value of semester_class_id.
      *
-     * @param \Base\Entity\Role $role
-     * @return \Base\Entity\RoleInherit
+     * @param integer $semester_class_id
+     * @return \Base\Entity\TeacherCourse
      */
-    public function setRoleRelatedByRoleId(Role $role = null)
+    public function setSemesterClassId($semester_class_id)
     {
-        $this->roleRelatedByRoleId = $role;
+        $this->semester_class_id = $semester_class_id;
 
         return $this;
     }
 
     /**
-     * Get Role entity related by `role_id` (many to one).
+     * Get the value of semester_class_id.
      *
-     * @return \Base\Entity\Role
+     * @return integer
      */
-    public function getRoleRelatedByRoleId()
+    public function getSemesterClassId()
     {
-        return $this->roleRelatedByRoleId;
+        return $this->semester_class_id;
     }
 
     /**
-     * Set Role entity related by `parent_id` (many to one).
+     * Set SemesterTeacher entity (many to one).
      *
-     * @param \Base\Entity\Role $role
-     * @return \Base\Entity\RoleInherit
+     * @param \Base\Entity\SemesterTeacher $semesterTeacher
+     * @return \Base\Entity\TeacherCourse
      */
-    public function setRoleRelatedByParentId(Role $role = null)
+    public function setSemesterTeacher(SemesterTeacher $semesterTeacher = null)
     {
-        $this->roleRelatedByParentId = $role;
+        $this->semesterTeacher = $semesterTeacher;
 
         return $this;
     }
 
     /**
-     * Get Role entity related by `parent_id` (many to one).
+     * Get SemesterTeacher entity (many to one).
      *
-     * @return \Base\Entity\Role
+     * @return \Base\Entity\SemesterTeacher
      */
-    public function getRoleRelatedByParentId()
+    public function getSemesterTeacher()
     {
-        return $this->roleRelatedByParentId;
+        return $this->semesterTeacher;
+    }
+
+    /**
+     * Set SemesterClass entity (many to one).
+     *
+     * @param \Base\Entity\SemesterClass $semesterClass
+     * @return \Base\Entity\TeacherCourse
+     */
+    public function setSemesterClass(SemesterClass $semesterClass = null)
+    {
+        $this->semesterClass = $semesterClass;
+
+        return $this;
+    }
+
+    /**
+     * Get SemesterClass entity (many to one).
+     *
+     * @return \Base\Entity\SemesterClass
+     */
+    public function getSemesterClass()
+    {
+        return $this->semesterClass;
     }
 
     /**
@@ -208,13 +270,25 @@ class RoleInherit implements InputFilterAwareInterface
                 'validators' => array(),
             ),
             array(
-                'name' => 'role_id',
+                'name' => 'subject_name',
+                'required' => false,
+                'filters' => array(),
+                'validators' => array(),
+            ),
+            array(
+                'name' => 'section_number',
+                'required' => false,
+                'filters' => array(),
+                'validators' => array(),
+            ),
+            array(
+                'name' => 'semester_teacher_id',
                 'required' => true,
                 'filters' => array(),
                 'validators' => array(),
             ),
             array(
-                'name' => 'parent_id',
+                'name' => 'semester_class_id',
                 'required' => true,
                 'filters' => array(),
                 'validators' => array(),
@@ -255,8 +329,8 @@ class RoleInherit implements InputFilterAwareInterface
      */
     public function getArrayCopy(array $fields = array())
     {
-        $dataFields = array('id', 'role_id', 'parent_id');
-        $relationFields = array('role', 'role');
+        $dataFields = array('id', 'subject_name', 'section_number', 'semester_teacher_id', 'semester_class_id');
+        $relationFields = array('semesterTeacher', 'semesterClass');
         $copiedFields = array();
         foreach ($relationFields as $relationField) {
             $map = null;
@@ -288,6 +362,6 @@ class RoleInherit implements InputFilterAwareInterface
 
     public function __sleep()
     {
-        return array('id', 'role_id', 'parent_id');
+        return array('id', 'subject_name', 'section_number', 'semester_teacher_id', 'semester_class_id');
     }
 }

@@ -10,18 +10,21 @@
 namespace Base\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 use Zend\InputFilter\InputFilter;
 use Zend\InputFilter\Factory as InputFactory;
 use Zend\InputFilter\InputFilterAwareInterface;
 use Zend\InputFilter\InputFilterInterface;
 
 /**
- * Base\Entity\PageFile
+ * Base\Entity\Teacher
  *
- * @ORM\Entity(repositoryClass="PageFileRepository")
- * @ORM\Table(name="page_file", indexes={@ORM\Index(name="fk_page_file_page1_idx", columns={"page_id"})})
+ * 教師
+ *
+ * @ORM\Entity(repositoryClass="TeacherRepository")
+ * @ORM\Table(name="teacher", indexes={@ORM\Index(name="fk_teacher_user1_idx", columns={"user_id"})})
  */
-class PageFile implements InputFilterAwareInterface
+class Teacher implements InputFilterAwareInterface
 {
     /**
      * Instance of InputFilterInterface.
@@ -38,45 +41,64 @@ class PageFile implements InputFilterAwareInterface
     protected $id;
 
     /**
-     * @ORM\Column(type="integer")
+     * 姓名
+     *
+     * @ORM\Column(name="`name`", type="string", length=45)
      */
-    protected $page_id;
+    protected $name;
 
     /**
-     * @ORM\Column(type="string", length=200, nullable=true)
+     * 身分證hashkey
+     *
+     * @ORM\Column(type="string", length=65)
      */
-    protected $file_name;
+    protected $edu_key;
 
     /**
-     * @ORM\Column(type="string", length=45, nullable=true)
+     * 性別
+     *
+     * @ORM\Column(type="string", length=6, nullable=true)
      */
-    protected $file_ext;
+    protected $sex;
 
     /**
-     * @ORM\Column(type="float", nullable=true)
+     * @ORM\Column(type="datetime", nullable=true)
      */
-    protected $file_size;
+    protected $update_time;
 
     /**
-     * @ORM\Column(type="string", length=200, nullable=true)
+     * @ORM\Column(type="integer", nullable=true)
      */
-    protected $source_name;
+    protected $user_id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Page", inversedBy="pageFiles")
-     * @ORM\JoinColumn(name="page_id", referencedColumnName="id", nullable=false)
+     * @ORM\OneToMany(targetEntity="SemesterTeacher", mappedBy="teacher")
+     * @ORM\JoinColumn(name="id", referencedColumnName="teacher_id", nullable=false)
      */
-    protected $page;
+    protected $semesterTeachers;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="teachers")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     */
+    protected $user;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="SemesterClass", mappedBy="teachers")
+     */
+    protected $semesterClasses;
 
     public function __construct()
     {
+        $this->semesterTeachers = new ArrayCollection();
+        $this->semesterClasses = new ArrayCollection();
     }
 
     /**
      * Set the value of id.
      *
      * @param integer $id
-     * @return \Base\Entity\PageFile
+     * @return \Base\Entity\Teacher
      */
     public function setId($id)
     {
@@ -96,141 +118,213 @@ class PageFile implements InputFilterAwareInterface
     }
 
     /**
-     * Set the value of page_id.
+     * Set the value of name.
      *
-     * @param integer $page_id
-     * @return \Base\Entity\PageFile
+     * @param string $name
+     * @return \Base\Entity\Teacher
      */
-    public function setPageId($page_id)
+    public function setName($name)
     {
-        $this->page_id = $page_id;
+        $this->name = $name;
 
         return $this;
     }
 
     /**
-     * Get the value of page_id.
+     * Get the value of name.
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set the value of edu_key.
+     *
+     * @param string $edu_key
+     * @return \Base\Entity\Teacher
+     */
+    public function setEduKey($edu_key)
+    {
+        $this->edu_key = $edu_key;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of edu_key.
+     *
+     * @return string
+     */
+    public function getEduKey()
+    {
+        return $this->edu_key;
+    }
+
+    /**
+     * Set the value of sex.
+     *
+     * @param string $sex
+     * @return \Base\Entity\Teacher
+     */
+    public function setSex($sex)
+    {
+        $this->sex = $sex;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of sex.
+     *
+     * @return string
+     */
+    public function getSex()
+    {
+        return $this->sex;
+    }
+
+    /**
+     * Set the value of update_time.
+     *
+     * @param \DateTime $update_time
+     * @return \Base\Entity\Teacher
+     */
+    public function setUpdateTime($update_time)
+    {
+        $this->update_time = $update_time;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of update_time.
+     *
+     * @return \DateTime
+     */
+    public function getUpdateTime()
+    {
+        return $this->update_time;
+    }
+
+    /**
+     * Set the value of user_id.
+     *
+     * @param integer $user_id
+     * @return \Base\Entity\Teacher
+     */
+    public function setUserId($user_id)
+    {
+        $this->user_id = $user_id;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of user_id.
      *
      * @return integer
      */
-    public function getPageId()
+    public function getUserId()
     {
-        return $this->page_id;
+        return $this->user_id;
     }
 
     /**
-     * Set the value of file_name.
+     * Add SemesterTeacher entity to collection (one to many).
      *
-     * @param string $file_name
-     * @return \Base\Entity\PageFile
+     * @param \Base\Entity\SemesterTeacher $semesterTeacher
+     * @return \Base\Entity\Teacher
      */
-    public function setFileName($file_name)
+    public function addSemesterTeacher(SemesterTeacher $semesterTeacher)
     {
-        $this->file_name = $file_name;
+        $this->semesterTeachers[] = $semesterTeacher;
 
         return $this;
     }
 
     /**
-     * Get the value of file_name.
+     * Remove SemesterTeacher entity from collection (one to many).
      *
-     * @return string
+     * @param \Base\Entity\SemesterTeacher $semesterTeacher
+     * @return \Base\Entity\Teacher
      */
-    public function getFileName()
+    public function removeSemesterTeacher(SemesterTeacher $semesterTeacher)
     {
-        return $this->file_name;
-    }
-
-    /**
-     * Set the value of file_ext.
-     *
-     * @param string $file_ext
-     * @return \Base\Entity\PageFile
-     */
-    public function setFileExt($file_ext)
-    {
-        $this->file_ext = $file_ext;
+        $this->semesterTeachers->removeElement($semesterTeacher);
 
         return $this;
     }
 
     /**
-     * Get the value of file_ext.
+     * Get SemesterTeacher entity collection (one to many).
      *
-     * @return string
+     * @return \Doctrine\Common\Collections\Collection
      */
-    public function getFileExt()
+    public function getSemesterTeachers()
     {
-        return $this->file_ext;
+        return $this->semesterTeachers;
     }
 
     /**
-     * Set the value of file_size.
+     * Set User entity (many to one).
      *
-     * @param float $file_size
-     * @return \Base\Entity\PageFile
+     * @param \Base\Entity\User $user
+     * @return \Base\Entity\Teacher
      */
-    public function setFileSize($file_size)
+    public function setUser(User $user = null)
     {
-        $this->file_size = $file_size;
+        $this->user = $user;
 
         return $this;
     }
 
     /**
-     * Get the value of file_size.
+     * Get User entity (many to one).
      *
-     * @return float
+     * @return \Base\Entity\User
      */
-    public function getFileSize()
+    public function getUser()
     {
-        return $this->file_size;
+        return $this->user;
     }
 
     /**
-     * Set the value of source_name.
+     * Add SemesterClass entity to collection.
      *
-     * @param string $source_name
-     * @return \Base\Entity\PageFile
+     * @param \Base\Entity\SemesterClass $semesterClass
+     * @return \Base\Entity\Teacher
      */
-    public function setSourceName($source_name)
+    public function addSemesterClass(SemesterClass $semesterClass)
     {
-        $this->source_name = $source_name;
+        $this->semesterClasses[] = $semesterClass;
 
         return $this;
     }
 
     /**
-     * Get the value of source_name.
+     * Remove SemesterClass entity from collection.
      *
-     * @return string
+     * @param \Base\Entity\SemesterClass $semesterClass
+     * @return \Base\Entity\Teacher
      */
-    public function getSourceName()
+    public function removeSemesterClass(SemesterClass $semesterClass)
     {
-        return $this->source_name;
-    }
-
-    /**
-     * Set Page entity (many to one).
-     *
-     * @param \Base\Entity\Page $page
-     * @return \Base\Entity\PageFile
-     */
-    public function setPage(Page $page = null)
-    {
-        $this->page = $page;
+        $this->semesterClasses->removeElement($semesterClass);
 
         return $this;
     }
 
     /**
-     * Get Page entity (many to one).
+     * Get SemesterClass entity collection.
      *
-     * @return \Base\Entity\Page
+     * @return \Doctrine\Common\Collections\Collection
      */
-    public function getPage()
+    public function getSemesterClasses()
     {
-        return $this->page;
+        return $this->semesterClasses;
     }
 
     /**
@@ -263,31 +357,31 @@ class PageFile implements InputFilterAwareInterface
                 'validators' => array(),
             ),
             array(
-                'name' => 'page_id',
+                'name' => 'name',
                 'required' => true,
                 'filters' => array(),
                 'validators' => array(),
             ),
             array(
-                'name' => 'file_name',
+                'name' => 'edu_key',
+                'required' => true,
+                'filters' => array(),
+                'validators' => array(),
+            ),
+            array(
+                'name' => 'sex',
                 'required' => false,
                 'filters' => array(),
                 'validators' => array(),
             ),
             array(
-                'name' => 'file_ext',
+                'name' => 'update_time',
                 'required' => false,
                 'filters' => array(),
                 'validators' => array(),
             ),
             array(
-                'name' => 'file_size',
-                'required' => false,
-                'filters' => array(),
-                'validators' => array(),
-            ),
-            array(
-                'name' => 'source_name',
+                'name' => 'user_id',
                 'required' => false,
                 'filters' => array(),
                 'validators' => array(),
@@ -328,8 +422,8 @@ class PageFile implements InputFilterAwareInterface
      */
     public function getArrayCopy(array $fields = array())
     {
-        $dataFields = array('id', 'page_id', 'file_name', 'file_ext', 'file_size', 'source_name');
-        $relationFields = array('page');
+        $dataFields = array('id', 'name', 'edu_key', 'sex', 'update_time', 'user_id');
+        $relationFields = array('user');
         $copiedFields = array();
         foreach ($relationFields as $relationField) {
             $map = null;
@@ -361,6 +455,6 @@ class PageFile implements InputFilterAwareInterface
 
     public function __sleep()
     {
-        return array('id', 'page_id', 'file_name', 'file_ext', 'file_size', 'source_name');
+        return array('id', 'name', 'edu_key', 'sex', 'update_time', 'user_id');
     }
 }

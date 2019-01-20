@@ -10,18 +10,21 @@
 namespace Base\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 use Zend\InputFilter\InputFilter;
 use Zend\InputFilter\Factory as InputFactory;
 use Zend\InputFilter\InputFilterAwareInterface;
 use Zend\InputFilter\InputFilterInterface;
 
 /**
- * Base\Entity\RoleInherit
+ * Base\Entity\SchoolOffice
  *
- * @ORM\Entity(repositoryClass="RoleInheritRepository")
- * @ORM\Table(name="role_inherit", indexes={@ORM\Index(name="fk_role_has_role_role2_idx", columns={"parent_id"}), @ORM\Index(name="fk_role_has_role_role1_idx", columns={"role_id"})})
+ * 處室
+ *
+ * @ORM\Entity(repositoryClass="SchoolOfficeRepository")
+ * @ORM\Table(name="school_office")
  */
-class RoleInherit implements InputFilterAwareInterface
+class SchoolOffice implements InputFilterAwareInterface
 {
     /**
      * Instance of InputFilterInterface.
@@ -38,36 +41,56 @@ class RoleInherit implements InputFilterAwareInterface
     protected $id;
 
     /**
-     * @ORM\Column(type="integer")
+     * 單位名稱
+     *
+     * @ORM\Column(name="`name`", type="string", length=45)
      */
-    protected $role_id;
+    protected $name;
 
     /**
-     * @ORM\Column(type="integer")
+     * 排序
+     *
+     * @ORM\Column(name="`rank`", type="integer", nullable=true)
      */
-    protected $parent_id;
+    protected $rank;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Role", inversedBy="roleInheritRelatedByRoleIds")
-     * @ORM\JoinColumn(name="role_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
+     * 單位電話
+     *
+     * @ORM\Column(type="string", length=45, nullable=true)
      */
-    protected $roleRelatedByRoleId;
+    protected $office_phone;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Role", inversedBy="roleInheritRelatedByParentIds")
-     * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
+     * 分機
+     *
+     * @ORM\Column(type="string", length=45, nullable=true)
      */
-    protected $roleRelatedByParentId;
+    protected $office_phone_ext;
+
+    /**
+     * 網址
+     *
+     * @ORM\Column(type="string", length=100, nullable=true)
+     */
+    protected $office_url;
+
+    /**
+     * @ORM\OneToMany(targetEntity="TeacherTitle", mappedBy="schoolOffice")
+     * @ORM\JoinColumn(name="id", referencedColumnName="school_office_id", nullable=false)
+     */
+    protected $teacherTitles;
 
     public function __construct()
     {
+        $this->teacherTitles = new ArrayCollection();
     }
 
     /**
      * Set the value of id.
      *
      * @param integer $id
-     * @return \Base\Entity\RoleInherit
+     * @return \Base\Entity\SchoolOffice
      */
     public function setId($id)
     {
@@ -87,95 +110,154 @@ class RoleInherit implements InputFilterAwareInterface
     }
 
     /**
-     * Set the value of role_id.
+     * Set the value of name.
      *
-     * @param integer $role_id
-     * @return \Base\Entity\RoleInherit
+     * @param string $name
+     * @return \Base\Entity\SchoolOffice
      */
-    public function setRoleId($role_id)
+    public function setName($name)
     {
-        $this->role_id = $role_id;
+        $this->name = $name;
 
         return $this;
     }
 
     /**
-     * Get the value of role_id.
+     * Get the value of name.
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set the value of rank.
+     *
+     * @param integer $rank
+     * @return \Base\Entity\SchoolOffice
+     */
+    public function setRank($rank)
+    {
+        $this->rank = $rank;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of rank.
      *
      * @return integer
      */
-    public function getRoleId()
+    public function getRank()
     {
-        return $this->role_id;
+        return $this->rank;
     }
 
     /**
-     * Set the value of parent_id.
+     * Set the value of office_phone.
      *
-     * @param integer $parent_id
-     * @return \Base\Entity\RoleInherit
+     * @param string $office_phone
+     * @return \Base\Entity\SchoolOffice
      */
-    public function setParentId($parent_id)
+    public function setOfficePhone($office_phone)
     {
-        $this->parent_id = $parent_id;
+        $this->office_phone = $office_phone;
 
         return $this;
     }
 
     /**
-     * Get the value of parent_id.
+     * Get the value of office_phone.
      *
-     * @return integer
+     * @return string
      */
-    public function getParentId()
+    public function getOfficePhone()
     {
-        return $this->parent_id;
+        return $this->office_phone;
     }
 
     /**
-     * Set Role entity related by `role_id` (many to one).
+     * Set the value of office_phone_ext.
      *
-     * @param \Base\Entity\Role $role
-     * @return \Base\Entity\RoleInherit
+     * @param string $office_phone_ext
+     * @return \Base\Entity\SchoolOffice
      */
-    public function setRoleRelatedByRoleId(Role $role = null)
+    public function setOfficePhoneExt($office_phone_ext)
     {
-        $this->roleRelatedByRoleId = $role;
+        $this->office_phone_ext = $office_phone_ext;
 
         return $this;
     }
 
     /**
-     * Get Role entity related by `role_id` (many to one).
+     * Get the value of office_phone_ext.
      *
-     * @return \Base\Entity\Role
+     * @return string
      */
-    public function getRoleRelatedByRoleId()
+    public function getOfficePhoneExt()
     {
-        return $this->roleRelatedByRoleId;
+        return $this->office_phone_ext;
     }
 
     /**
-     * Set Role entity related by `parent_id` (many to one).
+     * Set the value of office_url.
      *
-     * @param \Base\Entity\Role $role
-     * @return \Base\Entity\RoleInherit
+     * @param string $office_url
+     * @return \Base\Entity\SchoolOffice
      */
-    public function setRoleRelatedByParentId(Role $role = null)
+    public function setOfficeUrl($office_url)
     {
-        $this->roleRelatedByParentId = $role;
+        $this->office_url = $office_url;
 
         return $this;
     }
 
     /**
-     * Get Role entity related by `parent_id` (many to one).
+     * Get the value of office_url.
      *
-     * @return \Base\Entity\Role
+     * @return string
      */
-    public function getRoleRelatedByParentId()
+    public function getOfficeUrl()
     {
-        return $this->roleRelatedByParentId;
+        return $this->office_url;
+    }
+
+    /**
+     * Add TeacherTitle entity to collection (one to many).
+     *
+     * @param \Base\Entity\TeacherTitle $teacherTitle
+     * @return \Base\Entity\SchoolOffice
+     */
+    public function addTeacherTitle(TeacherTitle $teacherTitle)
+    {
+        $this->teacherTitles[] = $teacherTitle;
+
+        return $this;
+    }
+
+    /**
+     * Remove TeacherTitle entity from collection (one to many).
+     *
+     * @param \Base\Entity\TeacherTitle $teacherTitle
+     * @return \Base\Entity\SchoolOffice
+     */
+    public function removeTeacherTitle(TeacherTitle $teacherTitle)
+    {
+        $this->teacherTitles->removeElement($teacherTitle);
+
+        return $this;
+    }
+
+    /**
+     * Get TeacherTitle entity collection (one to many).
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getTeacherTitles()
+    {
+        return $this->teacherTitles;
     }
 
     /**
@@ -208,14 +290,32 @@ class RoleInherit implements InputFilterAwareInterface
                 'validators' => array(),
             ),
             array(
-                'name' => 'role_id',
+                'name' => 'name',
                 'required' => true,
                 'filters' => array(),
                 'validators' => array(),
             ),
             array(
-                'name' => 'parent_id',
-                'required' => true,
+                'name' => 'rank',
+                'required' => false,
+                'filters' => array(),
+                'validators' => array(),
+            ),
+            array(
+                'name' => 'office_phone',
+                'required' => false,
+                'filters' => array(),
+                'validators' => array(),
+            ),
+            array(
+                'name' => 'office_phone_ext',
+                'required' => false,
+                'filters' => array(),
+                'validators' => array(),
+            ),
+            array(
+                'name' => 'office_url',
+                'required' => false,
                 'filters' => array(),
                 'validators' => array(),
             ),
@@ -255,8 +355,8 @@ class RoleInherit implements InputFilterAwareInterface
      */
     public function getArrayCopy(array $fields = array())
     {
-        $dataFields = array('id', 'role_id', 'parent_id');
-        $relationFields = array('role', 'role');
+        $dataFields = array('id', 'name', 'rank', 'office_phone', 'office_phone_ext', 'office_url');
+        $relationFields = array();
         $copiedFields = array();
         foreach ($relationFields as $relationField) {
             $map = null;
@@ -288,6 +388,6 @@ class RoleInherit implements InputFilterAwareInterface
 
     public function __sleep()
     {
-        return array('id', 'role_id', 'parent_id');
+        return array('id', 'name', 'rank', 'office_phone', 'office_phone_ext', 'office_url');
     }
 }

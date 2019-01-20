@@ -16,12 +16,14 @@ use Zend\InputFilter\InputFilterAwareInterface;
 use Zend\InputFilter\InputFilterInterface;
 
 /**
- * Base\Entity\RoleInherit
+ * Base\Entity\SyncLog
  *
- * @ORM\Entity(repositoryClass="RoleInheritRepository")
- * @ORM\Table(name="role_inherit", indexes={@ORM\Index(name="fk_role_has_role_role2_idx", columns={"parent_id"}), @ORM\Index(name="fk_role_has_role_role1_idx", columns={"role_id"})})
+ * 同步記錄
+ *
+ * @ORM\Entity(repositoryClass="SyncLogRepository")
+ * @ORM\Table(name="sync_log")
  */
-class RoleInherit implements InputFilterAwareInterface
+class SyncLog implements InputFilterAwareInterface
 {
     /**
      * Instance of InputFilterInterface.
@@ -38,26 +40,23 @@ class RoleInherit implements InputFilterAwareInterface
     protected $id;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      */
-    protected $role_id;
+    protected $sync_state;
 
     /**
-     * @ORM\Column(type="integer")
+     * 遠端資料時間
+     *
+     * @ORM\Column(type="datetime", nullable=true)
      */
-    protected $parent_id;
+    protected $data_update_time;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Role", inversedBy="roleInheritRelatedByRoleIds")
-     * @ORM\JoinColumn(name="role_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
+     * 更新時間
+     *
+     * @ORM\Column(type="datetime", nullable=true)
      */
-    protected $roleRelatedByRoleId;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="Role", inversedBy="roleInheritRelatedByParentIds")
-     * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
-     */
-    protected $roleRelatedByParentId;
+    protected $update_time;
 
     public function __construct()
     {
@@ -67,7 +66,7 @@ class RoleInherit implements InputFilterAwareInterface
      * Set the value of id.
      *
      * @param integer $id
-     * @return \Base\Entity\RoleInherit
+     * @return \Base\Entity\SyncLog
      */
     public function setId($id)
     {
@@ -87,95 +86,72 @@ class RoleInherit implements InputFilterAwareInterface
     }
 
     /**
-     * Set the value of role_id.
+     * Set the value of sync_state.
      *
-     * @param integer $role_id
-     * @return \Base\Entity\RoleInherit
+     * @param integer $sync_state
+     * @return \Base\Entity\SyncLog
      */
-    public function setRoleId($role_id)
+    public function setSyncState($sync_state)
     {
-        $this->role_id = $role_id;
+        $this->sync_state = $sync_state;
 
         return $this;
     }
 
     /**
-     * Get the value of role_id.
+     * Get the value of sync_state.
      *
      * @return integer
      */
-    public function getRoleId()
+    public function getSyncState()
     {
-        return $this->role_id;
+        return $this->sync_state;
     }
 
     /**
-     * Set the value of parent_id.
+     * Set the value of data_update_time.
      *
-     * @param integer $parent_id
-     * @return \Base\Entity\RoleInherit
+     * @param \DateTime $data_update_time
+     * @return \Base\Entity\SyncLog
      */
-    public function setParentId($parent_id)
+    public function setDataUpdateTime($data_update_time)
     {
-        $this->parent_id = $parent_id;
+        $this->data_update_time = $data_update_time;
 
         return $this;
     }
 
     /**
-     * Get the value of parent_id.
+     * Get the value of data_update_time.
      *
-     * @return integer
+     * @return \DateTime
      */
-    public function getParentId()
+    public function getDataUpdateTime()
     {
-        return $this->parent_id;
+        return $this->data_update_time;
     }
 
     /**
-     * Set Role entity related by `role_id` (many to one).
+     * Set the value of update_time.
      *
-     * @param \Base\Entity\Role $role
-     * @return \Base\Entity\RoleInherit
+     * @param \DateTime $update_time
+     * @return \Base\Entity\SyncLog
      */
-    public function setRoleRelatedByRoleId(Role $role = null)
+    public function setUpdateTime($update_time)
     {
-        $this->roleRelatedByRoleId = $role;
+        $this->update_time = $update_time;
 
         return $this;
     }
 
     /**
-     * Get Role entity related by `role_id` (many to one).
+     * Get the value of update_time.
      *
-     * @return \Base\Entity\Role
+     * @return \DateTime
      */
-    public function getRoleRelatedByRoleId()
+    public function getUpdateTime()
     {
-        return $this->roleRelatedByRoleId;
-    }
-
-    /**
-     * Set Role entity related by `parent_id` (many to one).
-     *
-     * @param \Base\Entity\Role $role
-     * @return \Base\Entity\RoleInherit
-     */
-    public function setRoleRelatedByParentId(Role $role = null)
-    {
-        $this->roleRelatedByParentId = $role;
-
-        return $this;
-    }
-
-    /**
-     * Get Role entity related by `parent_id` (many to one).
-     *
-     * @return \Base\Entity\Role
-     */
-    public function getRoleRelatedByParentId()
-    {
-        return $this->roleRelatedByParentId;
+        return $this->update_time;
     }
 
     /**
@@ -208,14 +184,20 @@ class RoleInherit implements InputFilterAwareInterface
                 'validators' => array(),
             ),
             array(
-                'name' => 'role_id',
-                'required' => true,
+                'name' => 'sync_state',
+                'required' => false,
                 'filters' => array(),
                 'validators' => array(),
             ),
             array(
-                'name' => 'parent_id',
-                'required' => true,
+                'name' => 'data_update_time',
+                'required' => false,
+                'filters' => array(),
+                'validators' => array(),
+            ),
+            array(
+                'name' => 'update_time',
+                'required' => false,
                 'filters' => array(),
                 'validators' => array(),
             ),
@@ -255,8 +237,8 @@ class RoleInherit implements InputFilterAwareInterface
      */
     public function getArrayCopy(array $fields = array())
     {
-        $dataFields = array('id', 'role_id', 'parent_id');
-        $relationFields = array('role', 'role');
+        $dataFields = array('id', 'sync_state', 'data_update_time', 'update_time');
+        $relationFields = array();
         $copiedFields = array();
         foreach ($relationFields as $relationField) {
             $map = null;
@@ -288,6 +270,6 @@ class RoleInherit implements InputFilterAwareInterface
 
     public function __sleep()
     {
-        return array('id', 'role_id', 'parent_id');
+        return array('id', 'sync_state', 'data_update_time', 'update_time');
     }
 }
