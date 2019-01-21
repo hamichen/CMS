@@ -67,7 +67,7 @@ class UserController extends BaseController
                 $userRes->setDisplayName($data['display_name']);
                 $userRes->setUsername($data['username']);
                 $userRes->setRole($data['role']);
-                $userRes->setPassword(\Zend\Ldap\Attribute::createPassword($data['password']));
+                $userRes->setPassword(md5($data['password']));
                 $em->persist($userRes);
                 $em->flush();
                 $jsonModel->setVariable('success', true);

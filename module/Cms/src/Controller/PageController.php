@@ -290,7 +290,7 @@ class PageController extends BaseController
             $user = $this->getAuthService()->getIdentity();
 
             $pageRes->setMenu($em->getReference('Base\Entity\Menu', $data['menu_id']));
-            $pageRes->setUser($em->getReference('Base\Entity\user', $user->getUsername()));
+            $pageRes->setUser($em->getReference('Base\Entity\user', $user->getId()));
             $pageRes->setKind($data['kind']);
 
 

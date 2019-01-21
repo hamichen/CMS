@@ -139,7 +139,7 @@ class MenuController extends BaseController
                 $user = $this->getAuthService()->getIdentity();
 
                 $menuRes->setUpdateTime(new \DateTime());
-                $menuRes->setUser($em->getReference('Base\Entity\User', $user->getUsername()));
+                $menuRes->setUser($em->getReference('Base\Entity\User', $user->getId()));
 
                 $em->persist($menuRes);
                 $em->flush();
