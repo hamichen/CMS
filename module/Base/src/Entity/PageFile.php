@@ -18,7 +18,7 @@ use Zend\InputFilter\InputFilterInterface;
 /**
  * Base\Entity\PageFile
  *
- * @ORM\Entity(repositoryClass="PageFileRepository")
+ * @ORM\Entity
  * @ORM\Table(name="page_file", indexes={@ORM\Index(name="fk_page_file_page1_idx", columns={"page_id"})})
  */
 class PageFile implements InputFilterAwareInterface
@@ -235,7 +235,7 @@ class PageFile implements InputFilterAwareInterface
 
     /**
      * Not used, Only defined to be compatible with InputFilterAwareInterface.
-     * 
+     *
      * @param \Zend\InputFilter\InputFilterInterface $inputFilter
      * @throws \Exception
      */
@@ -322,7 +322,7 @@ class PageFile implements InputFilterAwareInterface
     /**
      * Return a array with all fields and data.
      * Default the relations will be ignored.
-     * 
+     *
      * @param array $fields
      * @return array
      */

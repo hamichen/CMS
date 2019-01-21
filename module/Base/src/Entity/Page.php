@@ -692,7 +692,7 @@ class Page implements InputFilterAwareInterface
 
     /**
      * Not used, Only defined to be compatible with InputFilterAwareInterface.
-     * 
+     *
      * @param \Zend\InputFilter\InputFilterInterface $inputFilter
      * @throws \Exception
      */
@@ -715,7 +715,7 @@ class Page implements InputFilterAwareInterface
         $filters = array(
             array(
                 'name' => 'id',
-                'required' => true,
+                'required' => false,
                 'filters' => array(),
                 'validators' => array(),
             ),
@@ -811,7 +811,7 @@ class Page implements InputFilterAwareInterface
             ),
             array(
                 'name' => 'user_id',
-                'required' => true,
+                'required' => false,
                 'filters' => array(),
                 'validators' => array(),
             ),
@@ -845,7 +845,7 @@ class Page implements InputFilterAwareInterface
     /**
      * Return a array with all fields and data.
      * Default the relations will be ignored.
-     * 
+     *
      * @param array $fields
      * @return array
      */

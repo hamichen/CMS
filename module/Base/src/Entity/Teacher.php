@@ -21,7 +21,7 @@ use Zend\InputFilter\InputFilterInterface;
  *
  * 教師
  *
- * @ORM\Entity(repositoryClass="TeacherRepository")
+ * @ORM\Entity
  * @ORM\Table(name="teacher", indexes={@ORM\Index(name="fk_teacher_user1_idx", columns={"user_id"})})
  */
 class Teacher implements InputFilterAwareInterface
@@ -329,7 +329,7 @@ class Teacher implements InputFilterAwareInterface
 
     /**
      * Not used, Only defined to be compatible with InputFilterAwareInterface.
-     * 
+     *
      * @param \Zend\InputFilter\InputFilterInterface $inputFilter
      * @throws \Exception
      */
@@ -416,7 +416,7 @@ class Teacher implements InputFilterAwareInterface
     /**
      * Return a array with all fields and data.
      * Default the relations will be ignored.
-     * 
+     *
      * @param array $fields
      * @return array
      */

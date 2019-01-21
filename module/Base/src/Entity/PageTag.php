@@ -19,7 +19,7 @@ use Zend\InputFilter\InputFilterInterface;
 /**
  * Base\Entity\PageTag
  *
- * @ORM\Entity(repositoryClass="PageTagRepository")
+ * @ORM\Entity
  * @ORM\Table(name="page_tag")
  */
 class PageTag implements InputFilterAwareInterface
@@ -137,7 +137,7 @@ class PageTag implements InputFilterAwareInterface
 
     /**
      * Not used, Only defined to be compatible with InputFilterAwareInterface.
-     * 
+     *
      * @param \Zend\InputFilter\InputFilterInterface $inputFilter
      * @throws \Exception
      */
@@ -200,7 +200,7 @@ class PageTag implements InputFilterAwareInterface
     /**
      * Return a array with all fields and data.
      * Default the relations will be ignored.
-     * 
+     *
      * @param array $fields
      * @return array
      */
