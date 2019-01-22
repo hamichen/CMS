@@ -1,0 +1,27 @@
+{% extends 'layout/layout.twig' %}
+{% block content %}
+
+    <div class="row">
+        <div class="col-md-6">
+
+            <div class="panel panel-default">
+                <div class="panel-heading">{{ title }}</div>
+                <div class="panel-body">
+                    <ul class="list-group">
+                        {% for u in data %}
+                            <li class="list-group-item">{{ u.username }}  -- {{ u.name }} -- {{ u.password }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+
+
+
+
+
+{% endblock content %}
