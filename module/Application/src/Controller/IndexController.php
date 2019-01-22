@@ -115,4 +115,29 @@ class IndexController extends BaseController
 
         return $viewModel;
     }
+
+
+    public function getDataAction()
+    {
+        $id = $this->params()->fromQuery('class_id');
+        $em = $this->getEntityManager();
+        $res = $em->createQueryBuilder()
+            ->select('u.id, u.stud_no, u.name, u.sex, ss.number')
+            ->from('Base\Entity\Student', 'u')
+            ->leftJoin('u.semesterStudents', 'ss')
+            ->leftJoin('ss.semesterClass', 'c')
+            ->where('c.id=:id')
+            ->orderBy('ss.number')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getArrayResult();
+
+        $viewModel = new ViewModel();
+        $viewModel->setVariable('data', $res);
+
+        return $viewModel;
+
+
+
+    }
 }

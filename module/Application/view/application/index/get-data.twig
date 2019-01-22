@@ -1,0 +1,20 @@
+<table class="table table-hover table-striped">
+    <thead>
+    <tr>
+        <th>座號</th>
+        <th>學號</th>
+        <th>姓名</th>
+        <th>性別</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for v in data %}
+        <tr>
+            <td>{{ v.number }}</td>
+            <td>{{ v.stud_no }}</td>
+            <td>{{ v.name }}</td>
+            <td>{{ v.sex }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
