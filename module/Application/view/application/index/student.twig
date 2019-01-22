@@ -1,0 +1,16 @@
+{% extends 'layout/layout.twig' %}
+{% block content %}
+ {{ form(studentForm) }}
+
+{% endblock content %}
+
+
+{% block inline %}
+    <script>
+        $("select[name='semester_id']").change(function () {
+            $("#student_form").submit();
+        });
+
+
+    </script>
+{% endblock %}

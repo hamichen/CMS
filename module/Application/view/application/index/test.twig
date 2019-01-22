@@ -1,0 +1,15 @@
+{% extends 'layout/layout.twig' %}
+{% block content %}
+    <ul>
+    {% for schoolOffice in data %}
+        <li><h2>{{ schoolOffice.name }}</h2>
+            <ul>
+                {% for title in schoolOffice.teacherTitles %}
+                    <li>{{ title.name }}</li>
+                {% endfor %}
+            </ul>
+        </li>
+
+    {% endfor %}
+    </ul>
+{% endblock content %}
