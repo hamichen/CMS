@@ -46,6 +46,8 @@ class IndexController extends BaseController
     {
         $em = $this->getEntityManager();
         $res = $em->getRepository('Base\Entity\Semester')->findAll();
+
+        // 建立學期表單 options
         $arr = [];
         /** @var  $row \Base\Entity\Semester */
         foreach ($res as $row) {
@@ -73,12 +75,16 @@ class IndexController extends BaseController
             ]
         ]);
 
+        // 如果有 post 傳值
         if ($this->getRequest()->isPost()) {
+            // 取出 post 值
             $data = $this->params()->fromPost();
 
+            // 將值設回給 form 做為初值
             $form->setData($data);
-
+            // 取出 學期 id
             $semesterId = $data['semester_id'];
+            // 以 Doctrine createQueryBuilder 查詢資料
             $qb = $em->createQueryBuilder()
                 ->select('u')
                 ->from('Base\Entity\SemesterClass', 'u')
@@ -88,18 +94,18 @@ class IndexController extends BaseController
                 ->getQuery()
                 ->getArrayResult();
 
+            // 建立班級陣列
             $arr = [];
             foreach ($qb as $item) {
                 $id = $item['id'];
                 $name = $item['grade'].'年'.$item['class_name'].'班 ('.$item['tutor'].')';
                 $arr[$id] = $name;
             }
+            // 將班級下拉選單加入 options
             $form->get('class_id')->setValueOptions($arr);
 
 //            $res = $em->getRepository('Base\Entity\SemesterClass')
 //                ->findBy(['semester_id' => $semesterId]);
-
-
         }
 
 
