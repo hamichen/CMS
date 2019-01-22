@@ -53,7 +53,22 @@ return [
                             ]
                         ]
                     ],
-
+                    'api' => [
+                        'type' => Segment::class,
+                        'options' => [
+                            'route' => '/api[/:action]',
+                            'name' => 'API管理',
+                            'constraints' => [
+                                'module' => __NAMESPACE__,
+                                'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                'action' => '[a-zA-Z][a-zA-Z0-9_-]*'
+                            ],
+                            'defaults' => [
+                                'controller' => Controller\ApiController::class,
+                                'action' => 'index'
+                            ]
+                        ]
+                    ],
                 ]
             ]
         ]
@@ -63,10 +78,12 @@ return [
         'factories' => [
             Controller\IndexController::class => BaseFactory::class,
             Controller\UserController::class => BaseFactory::class,
+            Controller\ApiController::class => BaseFactory::class,
 
         ],
         'aliases' => [
             'user' => Controller\UserController::class,
+            'api' => Controller\ApiController::class,
         ]
 
     ],
