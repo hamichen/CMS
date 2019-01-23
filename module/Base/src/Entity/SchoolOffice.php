@@ -21,7 +21,7 @@ use Zend\InputFilter\InputFilterInterface;
  *
  * 處室
  *
- * @ORM\Entity(repositoryClass="SchoolOfficeRepository")
+ * @ORM\Entity
  * @ORM\Table(name="school_office")
  */
 class SchoolOffice implements InputFilterAwareInterface
