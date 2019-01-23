@@ -4,7 +4,44 @@
 {% endblock %}
 
 {% block content %}
+    {{ form().openTag(examForm) |raw }}
 
-    {{ form(examForm) }}
+    <div class="row">
+        <div class="col-sm-12">
+            {{ formRow(examForm.get('subject')) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6">
+            {{ formRow(examForm.get('open_time')) }}
+        </div>
+        <div class="col-sm-6">
+            {{ formRow(examForm.get('close_time')) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            {{ formRow(examForm.get('memo')) }}
+        </div>
+    </div>
 
+    {{ form().closeTag() |raw }}
 {% endblock %}
+
+{% block style %}
+  <link rel="stylesheet" type="text/css" href="/datetime/jquery.datetimepicker.min.css"/>
+{% endblock style %}
+
+{% block inline %}
+  <script src="/datetime/jquery.datetimepicker.full.min.js"></script>
+    <script>
+        $.datetimepicker.setLocale('zh-TW');
+
+        $("input[name='open_time'], input[name='close_time']").datetimepicker();
+
+
+    </script>
+
+
+
+{% endblock inline %}
