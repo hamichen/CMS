@@ -9,6 +9,7 @@
 namespace Exam\Form;
 
 
+use Zend\Form\Element\File;
 use Zend\Form\Element\Hidden;
 use Zend\Form\Element\Text;
 use Zend\Form\Element\Textarea;
@@ -49,6 +50,14 @@ class ExamForm extends Form
                 'label' => '作業開放時間'
             ]
         ]);
+        $this->add([
+            'name' => 'stu_img',
+            'type' => File::class,
+            'options' => [
+                'label' => ' file'
+            ]
+        ]);
+
         $this->add([
             'name' => 'id',
             'type' => Hidden::class

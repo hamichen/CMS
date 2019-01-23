@@ -10,6 +10,7 @@ namespace Exam\Controller;
 
 
 use Base\Controller\BaseController;
+use Base\Document\ExamFile;
 use Base\Entity\Exam;
 use Exam\Form\ExamForm;
 use Zend\View\Model\JsonModel;
@@ -60,6 +61,24 @@ class AdminController extends BaseController
                 if ($data2['close_time']) {
                     $exam->setCloseTime(new \DateTime($data2['close_time']));
                 }
+
+                $file = $this->params()->fromFiles();
+
+                if (isset($file['stu_img'])) {
+                    $examFile = new ExamFile();
+                    $examFile->setName($file['stu_img']['name']);
+                    $examFile->setType($file['stu_img']['type']);
+                    $examFile->setFile($file['stu_img']['tmp_name']);
+                    $dm = $this->getDocumentManager();
+                    $dm->persist($examFile);
+                    $dm->flush();
+                    $mongoId = $examFile->getId();
+                    // 測試用
+                    $exam->setMemo($mongoId);
+                }
+
+
+
                 $em->persist($exam);
                 $em->flush();
                 return $this->redirect()->toUrl('/exam/admin');
@@ -103,5 +122,24 @@ class AdminController extends BaseController
         }
 
         return $jsonModel;
+    }
+
+    public function imgAction()
+    {
+        $id = $this->params()->fromQuery('id');
+        $dm = $this->getDocumentManager();
+        /** @var \Zend\Http\Response $tmpRespone */
+        $tmpResponse = $this->getResponse();
+        $data = $dm->getRepository('Base\Document\ExamFile')->find($id);
+        if ($data) {
+            $tmpResponse->getHeaders()->addHeaderLine('Content-Type', $data->getType())
+                ->addHeaderLine('Content-Disposition', 'attachment; filename="' . $data->getName() . '"')
+                ->addHeaderLine('Content-Length', $data->getLength());
+            $tmpResponse->setContent($data->getFile()->getBytes());
+            return $tmpResponse;
+        } else {
+            return $tmpResponse->setStatusCode(404);
+        }
+
     }
 }

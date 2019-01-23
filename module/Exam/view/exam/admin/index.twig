@@ -19,7 +19,11 @@
                 <tbody>
                 {% for v in data %}
                     <tr>
-                        <td>{{ v.subject }}</td>
+                        <td>{{ v.subject }}
+                        {% if v.memo %}
+                        <img src="/exam/admin/img?id={{ v.memo }}">
+                        {% endif %}
+                        </td>
                         <td>{{ v.openTime.format('Y-m-d H:i') }}</td>
                         <td>
                             <a href="/exam/admin/add?id={{ v.id }}"><span class="btn btn-xs btn-warning edit-btn">
