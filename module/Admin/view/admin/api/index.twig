@@ -1,0 +1,41 @@
+{% extends 'layout/layout.twig' %}
+{% block pageTitle %}
+    {{ PageTitle ('API管理') }}
+{% endblock %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-sm-6">
+            <ul class="list-group">
+                <li class="list-group-item">同步學期資料
+                    <span id="sync-btn" class="btn btn-primary btn-xs pull-right"><i class="fa fa-sync"></i> 同步</span>
+                </li>
+                <li class="list-group-item">更改密碼</li>
+            </ul>
+
+        </div>
+    </div>
+
+{% endblock content %}
+
+{% block inline %}
+
+    <script>
+
+        $("#sync-btn").click(function () {
+            let $this = $(this);
+            $this.button('loading');
+            $.get('/admin/api/sync-semester', function (res) {
+                if (res.success) {
+                    $this.button('reset');
+                }
+                else {
+                    alert(res.message);
+                    $this.button('reset');
+                }
+            })
+        });
+
+    </script>
+{% endblock inline %}
