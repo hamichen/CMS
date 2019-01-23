@@ -10,7 +10,7 @@
     "entityNamespace": "Base\\Entity",
     "repositoryNamespace": "",
     "useAnnotationPrefix": "ORM\\",
-    "useAutomaticRepository": true,
+    "useAutomaticRepository": false,
     "indentation": 4,
     "filename": "%entity%.%extension%",
     "quoteIdentifier": false

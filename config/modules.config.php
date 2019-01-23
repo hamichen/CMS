@@ -47,4 +47,5 @@ return [
     'Application',
     'Admin',
     'Cms',
+    'Exam'
 ];
