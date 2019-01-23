@@ -9,6 +9,7 @@
 namespace Exam\Form;
 
 
+use Zend\Form\Element\Hidden;
 use Zend\Form\Element\Text;
 use Zend\Form\Element\Textarea;
 use Zend\Form\Form;
@@ -47,6 +48,37 @@ class ExamForm extends Form
             'options' => [
                 'label' => '作業開放時間'
             ]
+        ]);
+        $this->add([
+            'name' => 'id',
+            'type' => Hidden::class
+
+        ]);
+
+        $this->addInputFilter();
+    }
+
+
+    public function addInputFilter()
+    {
+        $inputFilter = $this->getInputFilter();
+        $inputFilter->add([
+            'name' => 'subject',
+            'required' => true,
+            'filters'  => [
+                ['name' => 'StringTrim'],
+                ['name' => 'StripTags'],
+                ['name' => 'StripNewlines'],
+            ],
+            'validators' => [
+                [
+                    'name' => 'StringLength',
+                    'options' => [
+                        'min' => 6,
+                        'max' => 128
+                    ],
+                ],
+            ],
         ]);
     }
 }
