@@ -2,6 +2,10 @@
 {% block content %}
  {{ form(studentForm) }}
 
+  <div id="list-data">
+
+  </div>
+
 {% endblock content %}
 
 
@@ -11,6 +15,14 @@
             $("#student_form").submit();
         });
 
+        $("select[name='class_id']").change(function () {
+            let id = $(this).val();
+            $.get('get-data', {class_id: id}, function (html) {
+                $("#list-data").html(html);
+            })
+        });
+
+        $("select[name='class_id']").trigger('change');
 
     </script>
 {% endblock %}
